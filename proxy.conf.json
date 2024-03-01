@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "target": "https://www.dropbox.com/scl/fi/gp1587ulo9nvyg75fiw22/dji.stl?rlkey=6v9dtsh2hcgmnfp4pm7rbfgb2&raw=1",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}
