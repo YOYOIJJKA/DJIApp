@@ -1,0 +1,51 @@
+<body>
+    <h1>Квадрокоптер</h1>
+    <div class="buttons">
+      <button mat-raised-button color="primary" (click)="animateCP()">
+        Снять защиту камеры
+      </button>
+      <button mat-raised-button color="primary" (click)="animateBlades()">
+        Снять лопасти
+      </button>
+      <button mat-raised-button color="primary" (click)="animateBattery()">
+        Снять батарею
+      </button>
+      <button mat-raised-button color="primary" (click)="animateBladesBack()">
+        Установить лопасти
+      </button>
+      <button mat-raised-button color="primary" (click)="animateCPBack()">
+        Установить защиту камеры
+      </button>
+      <button mat-raised-button color="primary" (click)="animateBatteryBack()">
+        Установить батарею
+      </button>
+      <button mat-raised-button color="primary" (click)="animateCamera()">
+        Облет модели
+      </button>
+      <button mat-raised-button color="warn" (click)="blowUp()">
+        Взорвать
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="toggleText()"
+        *ngIf="!visible"
+      >
+        Показать текст
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="toggleText()"
+        *ngIf="visible"
+      >
+        Спрятать текст
+      </button>
+    </div>
+    <div>
+      <textarea class="tip" name="tip" id="" cols="30" *ngIf="visible" rows="5">{{
+        tip
+      }}</textarea>
+    </div>
+    <canvas #canvas></canvas>
+  </body>
