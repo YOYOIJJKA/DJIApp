@@ -15,6 +15,20 @@ canvas {
 .buttons {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 10px;
   margin-bottom: 10px;
+}
+mat-expansion-panel {
+  background-color: lightgrey;
+}
+.background {
+  background-color: Gainsboro;
+}
+.icon {
+  height: 50px;
+}
+.flex {
+  width: 100%;
+  display: flex;
 }

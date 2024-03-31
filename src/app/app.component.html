@@ -1,1 +1,25 @@
+<header *ngIf="router.url != '/'">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title
+        ><img class="icon" src="/assets/icon.png"
+      /></mat-panel-title>
+      <mat-panel-description> </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="buttons">
+      <button mat-flat-button color="primary" (click)="goToService()">
+        Сценарии обслуживания
+      </button>
+      <button mat-flat-button color="primary" (click)="goToRepair()">
+        Сценарии ремонта
+      </button>
+      <button mat-flat-button color="primary" (click)="goToTests()">
+        Пройти тестирование
+      </button>
+      <button mat-flat-button color="primary" (click)="goHome()">
+        Вернуться на главную страницу
+      </button>
+    </div>
+  </mat-expansion-panel>
+</header>
 <router-outlet></router-outlet>

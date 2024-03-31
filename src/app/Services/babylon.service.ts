@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { FRAME_RATE } from '../config/animatonts';
 import * as BABYLON from '@babylonjs/core';
 import '@babylonjs/loaders';
 
@@ -71,11 +72,10 @@ export class BabylonService {
   animate(from: number, to: number, name: string, position: string) {
     if (this.scene.getMeshByName(name)) {
       const mesh = this.scene.getMeshByName(name);
-      let frameRate = 10;
       let slide = new BABYLON.Animation(
         'Slide' + name,
         position,
-        frameRate,
+        FRAME_RATE,
         BABYLON.Animation.ANIMATIONTYPE_FLOAT,
         BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
       );
@@ -85,14 +85,18 @@ export class BabylonService {
         value: from,
       });
       keyFrames.push({
-        frame: frameRate,
+        frame: FRAME_RATE,
         value: to,
       });
       slide.setKeys(keyFrames);
-      this.scene.beginDirectAnimation(mesh, [slide], 0, 4 * frameRate, true);
+      this.startAnimation(mesh, [slide]);
     } else {
       this.animateArray(from, to, this.getChildNames(name), position);
     }
+  }
+
+  startAnimation(mesh: any, animations: any) {
+    this.scene.beginDirectAnimation(mesh, animations, 0, 4 * FRAME_RATE, false);
   }
 
   animateCamera() {

@@ -1,0 +1,46 @@
+mat-expansion-panel {
+  background-color: lightgrey;
+}
+.background{
+  background-color: Gainsboro;
+}
+.icon {
+  height: 50px;
+}
+.flex {
+  width: 100%;
+  display: flex;
+}
+.mavic {
+  width: 1000px;
+  height: 500px;
+}
+.text {
+  margin: 2%;
+  padding: 1%;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+}
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1%;
+}
+.tables {
+  width: 50%;
+}
+.table-specs {
+  width: 100%;
+}
+tr {
+  width: 100%;
+}
+th {
+  width: 50%;
+}
+th {
+  width: 50%;
+}
+h2{
+  padding: 20px;
+}
