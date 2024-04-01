@@ -1,7 +1,7 @@
 mat-expansion-panel {
   background-color: lightgrey;
 }
-.background{
+.background {
   background-color: Gainsboro;
 }
 .icon {
@@ -41,6 +41,14 @@ th {
 th {
   width: 50%;
 }
-h2{
+h2 {
   padding: 20px;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.border-bottom {
+  border-bottom: 2px solid lightgrey;
 }

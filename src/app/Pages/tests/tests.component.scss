@@ -1,0 +1,31 @@
+.answers {
+  display: flex;
+  flex-direction: column;
+}
+body {
+  margin-left: 5%;
+  font-size: larger;
+}
+.tests {
+  flex-direction: column;
+  display: flex;
+  gap: 5%;
+  justify-content: start;
+  flex-wrap: wrap;
+  padding: 20px;
+  border: 3px solid lightgrey;
+  border-radius: 10px;
+}
+.test {
+  display: flex;
+  flex-direction: column;
+}
+img {
+  max-width: 800px;
+  max-height: 800px;
+}
+.buttons {
+  margin-top: 2%;
+  display: flex;
+  gap: 0.5%;
+}

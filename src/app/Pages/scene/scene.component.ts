@@ -1,6 +1,5 @@
 import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { BabylonService } from '../../Services/babylon.service';
-import { MatButton } from '@angular/material/button';
 import { ANIMATIONS, ANIMATION_NAMES, TIPS } from '../../config/animatonts';
 
 @Component({

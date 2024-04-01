@@ -39,6 +39,26 @@ export class BabylonService {
     window.addEventListener('resize', () => {
       this.engine.resize();
     });
+
+    var skybox = BABYLON.Mesh.CreateBox(
+      'BackgroundSkybox',
+      2000,
+      this.scene,
+      undefined,
+      BABYLON.Mesh.BACKSIDE
+    );
+
+    var backgroundMaterial = new BABYLON.BackgroundMaterial(
+      'backgroundMaterial',
+      this.scene
+    );
+    backgroundMaterial.reflectionTexture = new BABYLON.CubeTexture(
+      'assets/textures/skybox',
+      this.scene
+    );
+    backgroundMaterial.reflectionTexture.coordinatesMode =
+      BABYLON.Texture.SKYBOX_MODE;
+    skybox.material = backgroundMaterial;
   }
 
   loadModel() {

@@ -9,24 +9,6 @@
     </mat-select>
   </mat-form-field>
   <div class="buttons">
-    <!-- <button mat-raised-button color="primary" (click)="animateCP()">
-      Снять защиту камеры
-    </button>
-    <button mat-raised-button color="primary" (click)="animateBlades()">
-      Снять лопасти
-    </button>
-    <button mat-raised-button color="primary" (click)="animateBattery()">
-      Снять батарею
-    </button>
-    <button mat-raised-button color="primary" (click)="animateBladesBack()">
-      Установить лопасти
-    </button>
-    <button mat-raised-button color="primary" (click)="animateCPBack()">
-      Установить защиту камеры
-    </button>
-    <button mat-raised-button color="primary" (click)="animateBatteryBack()">
-      Установить батарею
-    </button> -->
     <button mat-raised-button color="primary" (click)="startAnimation()">
       Запустить анимацию
     </button>
@@ -52,9 +34,19 @@
     </button>
   </div>
   <div>
-    <textarea class="tip" name="tip" id="" cols="30" *ngIf="visible" rows="5">{{
-      tip
-    }}</textarea>
+    <mat-form-field class="tip" *ngIf="visible">
+      <textarea
+        name="tip"
+        matInput
+        cdkTextareaAutosize
+        readonly
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="8"
+      >
+ {{ tip }}</textarea
+      >
+    </mat-form-field>
   </div>
   <canvas #canvas></canvas>
 </body>

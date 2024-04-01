@@ -9,14 +9,15 @@ canvas {
 }
 .tip {
   position: absolute;
-  margin-top: 5%;
-  margin-left: 75%;
+  margin-top: -1%;
+  margin-left: 70%;
+  max-width: 25%;
 }
 .buttons {
   display: inline-flex;
   gap: 10px;
   margin: 10px;
 }
-mat-form-field{
+mat-form-field {
   width: 30%;
 }

@@ -1,0 +1,48 @@
+<body>
+  <h1>Тестирование на предмет освоения инструкции</h1>
+  <div class="tests">
+    <h2>Вопросы без картинок</h2>
+    <div *ngFor="let test of tests">
+      <div class="test" *ngIf="!test.img">
+        <img *ngIf="test.img" [src]="test.img" />
+        <mat-radio-group [(ngModel)]="answers[test.index!]">
+          <mat-label>{{ test.question }}</mat-label>
+          <div class="answers">
+            <mat-radio-button
+              [value]="answer"
+              *ngFor="let answer of test.answers"
+              >{{ answer }}</mat-radio-button
+            >
+          </div>
+        </mat-radio-group>
+      </div>
+    </div>
+  </div>
+
+  <div class="tests">
+    <h2>Вопросы с картинками</h2>
+    <div *ngFor="let test of tests">
+      <div class="test" *ngIf="test.img">
+        <img *ngIf="test.img" [src]="test.img" />
+        <mat-radio-group [(ngModel)]="answers[test.index!]">
+          <mat-label>{{ test.question }}</mat-label>
+          <div class="answers">
+            <mat-radio-button
+              [value]="answer"
+              *ngFor="let answer of test.answers"
+              >{{ answer }}</mat-radio-button
+            >
+          </div>
+        </mat-radio-group>
+      </div>
+    </div>
+  </div>
+  <div class="buttons">
+    <button mat-raised-button color="primary" (click)="checkAnswers()">
+      Сохранить ответы
+    </button>
+    <button mat-raised-button color="warn" (click)="clearAnswers()">
+      Сбросить ответы
+    </button>
+  </div>
+</body>

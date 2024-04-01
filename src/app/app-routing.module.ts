@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './Pages/auth/auth.component';
 import { SceneComponent } from './Pages/scene/scene.component';
 import { MainComponent } from './Pages/main/main.component';
+import { TestsComponent } from './Pages/tests/tests.component';
 
 const routes: Routes = [
   {
@@ -15,16 +16,16 @@ const routes: Routes = [
   },
   {
     path: 'main-page',
-    component: MainComponent
+    component: MainComponent,
   },
-  // {
-  //   path: 'tests',
-  //   component: ?????
-  // }
+  {
+    path: 'tests',
+    component: TestsComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
