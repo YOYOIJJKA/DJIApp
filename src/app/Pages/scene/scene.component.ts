@@ -3,6 +3,7 @@ import { BabylonService } from '../../Services/babylon.service';
 import {
   ANIMATIONS,
   ANIMATION_NAMES,
+  COMPLICATED_ANIMATIONS,
   EXPLOSION_ANIMATIONS,
   REPAIR_ANIMATIONS,
   REPAIR_ANIMATION_NAMES,
@@ -11,6 +12,7 @@ import {
 } from '../../config/animatonts';
 import { Router } from '@angular/router';
 import { AnimationParams } from '../../Interfaces/animation';
+import { ComplicatedAnimation } from '../../Interfaces/complicated-animation';
 
 @Component({
   selector: 'app-scene',
@@ -39,9 +41,17 @@ export class SceneComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.babylonService.createScene(this.canvasRef.nativeElement);
-    // this.babylonService.loadModel();
+    this.babylonService.loadModel();
   }
 
+  test() {
+    this.babylonService.animateComplicated(COMPLICATED_ANIMATIONS[0]);
+  }
+
+  /**
+   * Метод проверяет url == scene-repair
+   * @returns boolean
+   */
   checkRoot(): boolean {
     return this.router.url == '/scene-repair';
   }
@@ -55,30 +65,7 @@ export class SceneComponent implements AfterViewInit {
       if (element.name == this.selected)
         index = this.animations.indexOf(element);
     });
-    console.log(this.animations[index]);
     this.babylonService.animate(this.animations[index]);
-    // switch (this.selected) {
-    //   case this.animationNames[0]:
-    //     this.animateBattery();
-    //     break;
-    //   case this.animationNames[1]:
-    //     this.animateCP();
-    //     break;
-    //   case this.animationNames[2]:
-    //     this.animateBlades();
-    //     break;
-    //   case this.animationNames[3]:
-    //     this.animateBatteryBack();
-    //     break;
-    //   case this.animationNames[4]:
-    //     this.animateCPBack();
-    //     break;
-    //   case this.animationNames[5]:
-    //     this.animateBladesBack();
-    //     break;
-    //   default:
-    //     break;
-    // }
   }
 
   /**
@@ -119,87 +106,4 @@ export class SceneComponent implements AfterViewInit {
     if (this.visible) this.visible = false;
     else this.visible = true;
   }
-
-  // /**
-  //  * Метод запускает анимацию снятия батареи
-  //  */
-  // animateBattery() {
-  //   this.visible = true;
-  //   this.tip = this.tips[0];
-  //   this.babylonService.animate(
-  //     this.animations[0].from,
-  //     this.animations[0].to,
-  //     this.animations[0].componentName,
-  //     this.animations[0].position
-  //   );
-  // }
-  // /**
-  //  * Метод запускает анимацию установки батареи
-  //  */
-  // animateBatteryBack() {
-  //   this.visible = true;
-  //   this.tip = this.tips[3];
-  //   this.babylonService.animate(
-  //     this.animations[0].to,
-  //     this.animations[0].from,
-  //     this.animations[0].componentName,
-  //     this.animations[0].position
-  //   );
-  // }
-  // /**
-  //  * Метод запускает анимацию снятия защиты камеры
-  //  */
-  // animateCP() {
-  //   this.visible = true;
-  //   this.tip = this.tips[1];
-  //   this.babylonService.animate(
-  //     this.animations[1].from,
-  //     this.animations[1].to,
-  //     this.animations[1].componentName,
-  //     this.animations[1].position
-  //   );
-  // }
-  // /**
-  //  * Метод запускает анимацию установки защиты камеры
-  //  */
-  // animateCPBack() {
-  //   this.visible = true;
-  //   this.tip = this.tips[4];
-  //   this.babylonService.animate(
-  //     this.animations[1].to,
-  //     this.animations[1].from,
-  //     this.animations[1].componentName,
-  //     this.animations[1].position
-  //   );
-  // }
-  // /**
-  //  * Метод запускает анимацию снятия лопастей
-  //  */
-  // animateBlades() {
-  //   this.visible = true;
-  //   this.tip = this.tips[2];
-  //   for (let i = 2; i <= 5; i++) {
-  //     this.babylonService.animate(
-  //       this.animations[i].from,
-  //       this.animations[i].to,
-  //       this.animations[i].componentName,
-  //       this.animations[i].position
-  //     );
-  //   }
-  // }
-  // /**
-  //  * Метод запускает анимацию установки лопастей
-  //  */
-  // animateBladesBack() {
-  //   this.visible = true;
-  //   this.tip = this.tips[5];
-  //   for (let i = 2; i <= 5; i++) {
-  //     this.babylonService.animate(
-  //       this.animations[i].to,
-  //       this.animations[i].from,
-  //       this.animations[i].componentName,
-  //       this.animations[i].position
-  //     );
-  //   }
-  // }
 }

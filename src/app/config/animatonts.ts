@@ -1,4 +1,5 @@
 import { AnimationParams } from '../Interfaces/animation';
+import { ComplicatedAnimation } from '../Interfaces/complicated-animation';
 
 export const NAMELIST = [
   'Battery',
@@ -51,7 +52,23 @@ export const REPAIR_ANIMATIONS: AnimationParams[] = [
     to: SHIFT,
     componentName: 'Battery',
     position: 'position.y',
-    name: 'testOne'
+    name: 'testOne',
+  },
+];
+
+export const COMPLICATED_ANIMATIONS: ComplicatedAnimation[] = [
+  {
+    componentName: [
+      'RightBackBlades',
+      'RightFrontBlades',
+      'LeftBackBlades',
+      'LeftFrontBlades',
+    ],
+    params: [
+      { coordinates: [0, SHIFT], position: 'position.y' },
+      { coordinates: [0, SHIFT], position: 'position.z' },
+    ],
+    name: 'Снятие лопастей',
   },
 ];
 

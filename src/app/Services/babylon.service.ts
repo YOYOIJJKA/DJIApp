@@ -3,6 +3,7 @@ import { FRAME_RATE } from '../config/animatonts';
 import * as BABYLON from '@babylonjs/core';
 import '@babylonjs/loaders';
 import { AnimationParams } from '../Interfaces/animation';
+import { ComplicatedAnimation } from '../Interfaces/complicated-animation';
 
 @Injectable({
   providedIn: 'root',
@@ -79,11 +80,13 @@ export class BabylonService {
       names.push(name + '_primitive' + index.toString());
       index++;
     }
-    console.log('FOUND MESHES NAMES =');
-    console.log(names);
     return names;
   }
 
+  /**
+   * Метод запускает анимацию в случае, когда компонент представлен в виде множества деталей
+   * @param animationParams
+   */
   animateArray(animationParams: AnimationParams) {
     if (Array.isArray(animationParams.componentName)) {
       animationParams.componentName.forEach((componentName) => {
@@ -93,25 +96,77 @@ export class BabylonService {
       });
     }
   }
+
+  animateComplicatedArray(complicatedAnimationParams: ComplicatedAnimation) {
+    if (Array.isArray(complicatedAnimationParams.componentName)) {
+      complicatedAnimationParams.componentName.forEach((componentName) => {
+        const newComplicatedAnimationParams = complicatedAnimationParams;
+        newComplicatedAnimationParams.componentName = componentName;
+        this.animateComplicated(newComplicatedAnimationParams);
+      });
+    }
+  }
   /**
-   * Метод запускает анимацию с введенными параметрами
-   * @param from точка начала анимации
-   * @param to точка окончания анимации
-   * @param componentName название компонента или массив названий
-   * @param position направление анимации
+   * Массив componentName = каждому по анимации
+   * Массив params = каждой координате по фрейму
+   * position = alpha, beta, position.y, position.x, position.z
+   * @param complicatedAnimationParams
+   */
+  animateComplicated(complicatedAnimationParams: ComplicatedAnimation) {
+    if (!Array.isArray(complicatedAnimationParams.componentName)) {
+      if (this.scene.getMeshByName(complicatedAnimationParams.componentName)) {
+        const mesh = this.scene.getMeshByName(
+          complicatedAnimationParams.componentName
+        );
+        const complicatedAnimations: BABYLON.Animation[] = [];
+
+        complicatedAnimationParams.params.forEach((params) => {
+          const newAnimation = new BABYLON.Animation(
+            'Complicated' + complicatedAnimationParams.componentName,
+            params.position,
+            FRAME_RATE,
+            BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+            BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+          );
+          const keyFrames: BABYLON.IAnimationKey[] = [];
+          params.coordinates.forEach((coordinate, index) => {
+            keyFrames.push({
+              frame: index * FRAME_RATE,
+              value: coordinate,
+            });
+          });
+          newAnimation.setKeys(keyFrames);
+          complicatedAnimations.push(newAnimation);
+        });
+        this.startAnimation(mesh, complicatedAnimations);
+      } else {
+        this.animateComplicatedArray(complicatedAnimationParams);
+      }
+    } else {
+      complicatedAnimationParams.componentName.forEach((element) => {
+        const newAnimationParams = complicatedAnimationParams;
+        newAnimationParams.componentName = element;
+        this.animateComplicated(newAnimationParams);
+      });
+    }
+  }
+
+  /**
+   * Метод запускает анимацию компонентов по введенным параметрам
+   * @param animationParams параметры анимации
    */
   animate(animationParams: AnimationParams) {
     if (!Array.isArray(animationParams.componentName)) {
       if (this.scene.getMeshByName(animationParams.componentName)) {
         const mesh = this.scene.getMeshByName(animationParams.componentName);
-        let slide = new BABYLON.Animation(
+        const slide = new BABYLON.Animation(
           'Slide' + animationParams.componentName,
           animationParams.position,
           FRAME_RATE,
           BABYLON.Animation.ANIMATIONTYPE_FLOAT,
           BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
         );
-        let keyFrames = [];
+        const keyFrames = [];
         keyFrames.push({
           frame: 0,
           value: animationParams.from,
