@@ -1,3 +1,5 @@
+import { AnimationParams } from '../Interfaces/animation';
+
 export const NAMELIST = [
   'Battery',
   'BottomBoard',
@@ -43,265 +45,297 @@ export const SHIFT = 20;
 
 export const FRAME_RATE = 10;
 
-export const ANIMATIONS = [
+export const REPAIR_ANIMATIONS: AnimationParams[] = [
   {
     from: 0,
     to: SHIFT,
-    name: 'Battery',
+    componentName: 'Battery',
+    position: 'position.y',
+    name: 'testOne'
+  },
+];
+
+export const REPAIR_TIPS = ['', ''];
+
+export const ANIMATIONS: AnimationParams[] = [
+  {
+    from: 0,
+    to: SHIFT,
+    componentName: 'Battery',
+    name: 'Снятие батареи',
     position: 'position.y',
   },
   //Защита Камеры
   {
     from: 0,
     to: -SHIFT,
-    name: 'CameraProtection',
+    name: 'Снятие защиты камеры',
+    componentName: 'CameraProtection',
     position: 'position.z',
   },
-  //////////////////ЛОПАСТИ 2-3-4-5
+  //Лопасти
   {
     from: 0,
     to: SHIFT * 2,
-    name: 'RightBackBlades',
+    componentName: [
+      'RightBackBlades',
+      'RightFrontBlades',
+      'LeftBackBlades',
+      'LeftFrontBlades',
+    ],
     position: 'position.y',
+    name: 'Снятие лопастей',
   },
   {
-    from: 0,
-    to: SHIFT * 2,
-    name: 'RightFrontBlades',
+    to: 0,
+    from: SHIFT,
+    componentName: 'Battery',
+    name: 'Установка батареи',
     position: 'position.y',
   },
+  //Защита Камеры
   {
-    from: 0,
-    to: SHIFT * 2,
-    name: 'LeftBackBlades',
-    position: 'position.y',
+    to: 0,
+    from: -SHIFT,
+    name: 'Установка защиты камеры',
+    componentName: 'CameraProtection',
+    position: 'position.z',
   },
+  //Лопасти
   {
-    from: 0,
-    to: SHIFT * 2,
-    name: 'LeftFrontBlades',
+    to: 0,
+    from: SHIFT * 2,
+    componentName: [
+      'RightBackBlades',
+      'RightFrontBlades',
+      'LeftBackBlades',
+      'LeftFrontBlades',
+    ],
     position: 'position.y',
+    name: 'Установка лопастей',
   },
-  //ВЗРЫВ 6 =>
+];
+
+export const EXPLOSION_ANIMATIONS: AnimationParams[] = [
   {
     from: 0,
     to: -SHIFT * 3.5,
-    name: 'BottomBoard',
+    componentName: 'BottomBoard',
     position: 'position.y',
   },
   {
     from: 0,
     to: -SHIFT * 4,
-    name: 'BottomCover',
+    componentName: 'BottomCover',
     position: 'position.y',
   },
   {
     from: 0,
     to: SHIFT * 3,
-    name: 'CameraModule',
+    componentName: 'CameraModule',
     position: 'position.y',
   },
   {
     from: 0,
     to: SHIFT * 4,
-    name: 'CameraProtection',
+    componentName: 'CameraProtection',
     position: 'position.y',
   },
   {
     from: 0,
     to: -SHIFT * 4,
-    name: 'Cooler',
+    componentName: 'Cooler',
     position: 'position.y',
   },
   {
     from: 0,
     to: -SHIFT * 3,
-    name: 'DustFilter',
+    componentName: 'DustFilter',
     position: 'position.y',
   },
   {
     from: 0,
     to: -SHIFT * 2,
-    name: 'Frame',
+    componentName: 'Frame',
     position: 'position.y',
   },
   {
     from: 0,
     to: -SHIFT * 2,
-    name: 'GPSBoard',
+    componentName: 'GPSBoard',
     position: 'position.y',
   },
   {
     from: 0,
     to: -SHIFT * 4,
-    name: 'LampBack',
+    componentName: 'LampBack',
     position: 'position.y',
   },
   ///LEFT BACK
   {
     from: 0,
     to: -SHIFT * 3,
-    name: 'LeftBackBeam',
+    componentName: 'LeftBackBeam',
     position: 'position.z',
   },
   {
     from: 0,
     to: SHIFT * 2.5,
-    name: 'LeftBackBlades',
+    componentName: 'LeftBackBlades',
     position: 'position.y',
   },
   {
     from: 0,
     to: SHIFT * 2,
-    name: 'LeftBackEngine',
+    componentName: 'LeftBackEngine',
     position: 'position.y',
   },
   {
     from: 0,
     to: -SHIFT * 2.5,
-    name: 'LeftBackScrews',
+    componentName: 'LeftBackScrews',
     position: 'position.z',
   },
   {
     from: 0,
     to: -SHIFT * 3.5,
-    name: 'LeftBackSupport',
+    componentName: 'LeftBackSupport',
     position: 'position.z',
   },
   /// LEFT FRONT
   {
     from: 0,
     to: -SHIFT * 3,
-    name: 'LeftFrontBeam',
+    componentName: 'LeftFrontBeam',
     position: 'position.z',
   },
   {
     from: 0,
     to: SHIFT * 2.5,
-    name: 'LeftFrontBlades',
+    componentName: 'LeftFrontBlades',
     position: 'position.y',
   },
   {
     from: 0,
     to: SHIFT * 2,
-    name: 'LeftFrontEngine',
+    componentName: 'LeftFrontEngine',
     position: 'position.y',
   },
   {
     from: 0,
     to: -SHIFT * 2.5,
-    name: 'LeftFrontScrews',
+    componentName: 'LeftFrontScrews',
     position: 'position.z',
   },
   {
     from: 0,
     to: -SHIFT * 3.5,
-    name: 'LeftFrontSupport',
+    componentName: 'LeftFrontSupport',
     position: 'position.z',
   },
   //RIGHT BACK
   {
     from: 0,
     to: -SHIFT * 3,
-    name: 'RightBackBeam',
+    componentName: 'RightBackBeam',
     position: 'position.z',
   },
   {
     from: 0,
     to: SHIFT * 2.5,
-    name: 'RightBackBlades',
+    componentName: 'RightBackBlades',
     position: 'position.y',
   },
   {
     from: 0,
     to: SHIFT * 2,
-    name: 'RightBackEngine',
+    componentName: 'RightBackEngine',
     position: 'position.y',
   },
   {
     from: 0,
     to: -SHIFT * 2.5,
-    name: 'RightBackScrews',
+    componentName: 'RightBackScrews',
     position: 'position.z',
   },
   {
     from: 0,
     to: -SHIFT * 3.5,
-    name: 'RightBackSupport',
+    componentName: 'RightBackSupport',
     position: 'position.z',
   },
   //RIGHT FRONT
   {
     from: 0,
     to: -SHIFT * 3,
-    name: 'RightFrontBeam',
+    componentName: 'RightFrontBeam',
     position: 'position.z',
   },
   {
     from: 0,
     to: SHIFT * 2.5,
-    name: 'RightFrontBlades',
+    componentName: 'RightFrontBlades',
     position: 'position.y',
   },
   {
     from: 0,
     to: SHIFT * 2,
-    name: 'RightFrontEngine',
+    componentName: 'RightFrontEngine',
     position: 'position.y',
   },
   {
     from: 0,
     to: -SHIFT * 2.5,
-    name: 'RightFrontScrews',
+    componentName: 'RightFrontScrews',
     position: 'position.z',
   },
   {
     from: 0,
     to: -SHIFT * 3.5,
-    name: 'RightFrontSupport',
+    componentName: 'RightFrontSupport',
     position: 'position.z',
   },
   //OTHER
   {
     from: 0,
     to: -SHIFT * 1,
-    name: 'MainBoard',
+    componentName: 'MainBoard',
     position: 'position.y',
   },
   {
     from: 0,
     to: -SHIFT * 3.5,
-    name: 'Plugs',
+    componentName: 'Plugs',
     position: 'position.y',
   },
   {
     from: 0,
     to: -SHIFT * 4,
-    name: 'ScrewPlugGroup',
+    componentName: 'ScrewPlugGroup',
     position: 'position.y',
   },
   {
     from: 0,
     to: -SHIFT * 5,
-    name: 'ScrewBottomGroup',
+    componentName: 'ScrewBottomGroup',
     position: 'position.y',
   },
   {
     from: 0,
     to: SHIFT * 2,
-    name: 'ScrewTopGroup',
+    componentName: 'ScrewTopGroup',
     position: 'position.y',
   },
   {
     from: 0,
     to: -SHIFT * 2,
-    name: 'Sensors',
+    componentName: 'Sensors',
     position: 'position.z',
   },
   {
     from: 0,
     to: SHIFT,
-    name: 'TopCover',
+    componentName: 'TopCover',
     position: 'position.y',
   },
 ];
@@ -314,6 +348,8 @@ export const ANIMATION_NAMES = [
   'Установка защиты камеры',
   'Установка лопастей',
 ];
+
+export const REPAIR_ANIMATION_NAMES = ['', ''];
 
 export const TIPS = [
   '1. Для снятия батареи нажмите на кнопки с обеих сторон, после чего поднимите ее вверх',

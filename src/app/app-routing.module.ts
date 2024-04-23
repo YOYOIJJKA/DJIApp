@@ -22,6 +22,10 @@ const routes: Routes = [
     path: 'tests',
     component: TestsComponent,
   },
+  {
+    path: 'scene-repair',
+    component: SceneComponent
+  }
 ];
 
 @NgModule({

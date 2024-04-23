@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FRAME_RATE } from '../config/animatonts';
 import * as BABYLON from '@babylonjs/core';
 import '@babylonjs/loaders';
+import { AnimationParams } from '../Interfaces/animation';
 
 @Injectable({
   providedIn: 'root',
@@ -83,35 +84,56 @@ export class BabylonService {
     return names;
   }
 
-  animateArray(from: number, to: number, names: string[], position: string) {
-    names.forEach((name) => {
-      this.animate(from, to, name, position);
-    });
+  animateArray(animationParams: AnimationParams) {
+    if (Array.isArray(animationParams.componentName)) {
+      animationParams.componentName.forEach((componentName) => {
+        const newAnimationParams = animationParams;
+        newAnimationParams.componentName = componentName;
+        this.animate(newAnimationParams);
+      });
+    }
   }
-
-  animate(from: number, to: number, name: string, position: string) {
-    if (this.scene.getMeshByName(name)) {
-      const mesh = this.scene.getMeshByName(name);
-      let slide = new BABYLON.Animation(
-        'Slide' + name,
-        position,
-        FRAME_RATE,
-        BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-        BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
-      );
-      let keyFrames = [];
-      keyFrames.push({
-        frame: 0,
-        value: from,
-      });
-      keyFrames.push({
-        frame: FRAME_RATE,
-        value: to,
-      });
-      slide.setKeys(keyFrames);
-      this.startAnimation(mesh, [slide]);
+  /**
+   * Метод запускает анимацию с введенными параметрами
+   * @param from точка начала анимации
+   * @param to точка окончания анимации
+   * @param componentName название компонента или массив названий
+   * @param position направление анимации
+   */
+  animate(animationParams: AnimationParams) {
+    if (!Array.isArray(animationParams.componentName)) {
+      if (this.scene.getMeshByName(animationParams.componentName)) {
+        const mesh = this.scene.getMeshByName(animationParams.componentName);
+        let slide = new BABYLON.Animation(
+          'Slide' + animationParams.componentName,
+          animationParams.position,
+          FRAME_RATE,
+          BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+          BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+        );
+        let keyFrames = [];
+        keyFrames.push({
+          frame: 0,
+          value: animationParams.from,
+        });
+        keyFrames.push({
+          frame: FRAME_RATE,
+          value: animationParams.to,
+        });
+        slide.setKeys(keyFrames);
+        this.startAnimation(mesh, [slide]);
+      } else {
+        animationParams.componentName = this.getChildNames(
+          animationParams.componentName
+        );
+        this.animateArray(animationParams);
+      }
     } else {
-      this.animateArray(from, to, this.getChildNames(name), position);
+      animationParams.componentName.forEach((element) => {
+        const newAnimationParams = animationParams;
+        newAnimationParams.componentName = element;
+        this.animate(newAnimationParams);
+      });
     }
   }
 

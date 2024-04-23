@@ -20,4 +20,8 @@ export const TESTS: Test[] = [
     correct: 'Защита камеры',
     img: '/assets/q1.jpg',
   },
+  {
+    question: 'Что самое полезное вы узнали из этой инструкции?',
+    correct: 'Всё'
+  }
 ];

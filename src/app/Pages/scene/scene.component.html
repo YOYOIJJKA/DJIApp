@@ -3,8 +3,8 @@
   <mat-form-field>
     <mat-label>Сценарий анимации</mat-label>
     <mat-select [(value)]="selected">
-      <mat-option *ngFor="let name of animationNames" value="{{ name }}">{{
-        name
+      <mat-option *ngFor="let animation of animations" value="{{ animation.name }}">{{
+        animation.name
       }}</mat-option>
     </mat-select>
   </mat-form-field>
