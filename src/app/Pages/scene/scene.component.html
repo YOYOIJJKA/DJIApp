@@ -3,9 +3,20 @@
   <mat-form-field>
     <mat-label>Сценарий анимации</mat-label>
     <mat-select [(value)]="selected">
-      <mat-option *ngFor="let animation of animations" value="{{ animation.name }}">{{
-        animation.name
-      }}</mat-option>
+      <mat-optgroup label="Анимации в один шаг">
+        <mat-option
+          *ngFor="let animation of animations"
+          value="{{ animation.name }}"
+          >{{ animation.name }}</mat-option
+        >
+      </mat-optgroup>
+      <mat-optgroup label="Сложные анимации">
+        <mat-option
+          *ngFor="let complicatedAnimation of complicatedAnimations"
+          value="{{ complicatedAnimation.name }}"
+          >{{ complicatedAnimation.name }}</mat-option
+        ></mat-optgroup
+      >
     </mat-select>
   </mat-form-field>
   <div class="buttons">

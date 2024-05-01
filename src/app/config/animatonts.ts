@@ -67,11 +67,27 @@ export const COMPLICATED_ANIMATIONS: ComplicatedAnimation[] = [
     params: [
       { coordinates: [0, -SHIFT / 5], position: 'position.y' },
       { coordinates: [0, SHIFT], position: 'alpha' },
-      { coordinates: [-SHIFT/5, SHIFT], position: 'position.y' },
+      { coordinates: [-SHIFT / 5, SHIFT], position: 'position.y' },
     ],
     name: 'Снятие лопастей',
   },
+  {
+    componentName: [
+      'RightBackBlades',
+      'RightFrontBlades',
+      'LeftBackBlades',
+      'LeftFrontBlades',
+    ],
+    params: [
+      { coordinates: [SHIFT, -SHIFT / 5], position: 'position.y' },
+      { coordinates: [SHIFT, 0], position: 'alpha' },
+      { coordinates: [-SHIFT / 5, 0], position: 'position.y' },
+    ],
+    name: 'Установка лопастей',
+  },
 ];
+
+export const COMPLICATED_REPAIR_ANIMATIONS: ComplicatedAnimation[] = [];
 
 export const REPAIR_TIPS = ['', ''];
 
@@ -92,18 +108,18 @@ export const ANIMATIONS: AnimationParams[] = [
     position: 'position.z',
   },
   //Лопасти
-  {
-    from: 0,
-    to: SHIFT * 2,
-    componentName: [
-      'RightBackBlades',
-      'RightFrontBlades',
-      'LeftBackBlades',
-      'LeftFrontBlades',
-    ],
-    position: 'position.y',
-    name: 'Снятие лопастей',
-  },
+  // {
+  //   from: 0,
+  //   to: SHIFT * 2,
+  //   componentName: [
+  //     'RightBackBlades',
+  //     'RightFrontBlades',
+  //     'LeftBackBlades',
+  //     'LeftFrontBlades',
+  //   ],
+  //   position: 'position.y',
+  //   name: 'Снятие лопастей',
+  // },
   {
     to: 0,
     from: SHIFT,
@@ -120,18 +136,18 @@ export const ANIMATIONS: AnimationParams[] = [
     position: 'position.z',
   },
   //Лопасти
-  {
-    to: 0,
-    from: SHIFT * 2,
-    componentName: [
-      'RightBackBlades',
-      'RightFrontBlades',
-      'LeftBackBlades',
-      'LeftFrontBlades',
-    ],
-    position: 'position.y',
-    name: 'Установка лопастей',
-  },
+  // {
+  //   to: 0,
+  //   from: SHIFT * 2,
+  //   componentName: [
+  //     'RightBackBlades',
+  //     'RightFrontBlades',
+  //     'LeftBackBlades',
+  //     'LeftFrontBlades',
+  //   ],
+  //   position: 'position.y',
+  //   name: 'Установка лопастей',
+  // },
 ];
 
 export const EXPLOSION_ANIMATIONS: AnimationParams[] = [

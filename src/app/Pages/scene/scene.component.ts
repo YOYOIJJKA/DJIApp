@@ -4,6 +4,7 @@ import {
   ANIMATIONS,
   ANIMATION_NAMES,
   COMPLICATED_ANIMATIONS,
+  COMPLICATED_REPAIR_ANIMATIONS,
   EXPLOSION_ANIMATIONS,
   REPAIR_ANIMATIONS,
   REPAIR_ANIMATION_NAMES,
@@ -24,15 +25,20 @@ export class SceneComponent implements AfterViewInit {
 
   isBlowed: boolean = false;
   animations: AnimationParams[];
+  complicatedAnimations: ComplicatedAnimation[];
   animationsProcessing: boolean = false;
   tips: string[];
   tip: string = '';
   visible: boolean = false;
   animationNames: string[];
   selected: string = '';
+  currentAnimation: number = 0;
 
   constructor(private babylonService: BabylonService, private router: Router) {
     this.animations = this.checkRoot() ? REPAIR_ANIMATIONS : ANIMATIONS;
+    this.complicatedAnimations = this.checkRoot()
+      ? COMPLICATED_REPAIR_ANIMATIONS
+      : COMPLICATED_ANIMATIONS;
     this.tips = this.checkRoot() ? REPAIR_TIPS : TIPS;
     this.animationNames = this.checkRoot()
       ? REPAIR_ANIMATION_NAMES
@@ -44,7 +50,6 @@ export class SceneComponent implements AfterViewInit {
     // this.babylonService.loadModel();
   }
 
-
   /**
    * Метод проверяет url == scene-repair
    * @returns boolean
@@ -52,17 +57,44 @@ export class SceneComponent implements AfterViewInit {
   checkRoot(): boolean {
     return this.router.url == '/scene-repair';
   }
-  /**
-   * Метод запускает анимацию в зависимости от выбранного пункта в выпадающем списке
-   */
-  startAnimation(): void {
-    let index: number = 0;
 
-    this.animations.forEach((element) => {
-      if (element.name == this.selected)
-        index = this.animations.indexOf(element);
+  startAnimation() {
+    let animationIndex: number | undefined;
+
+    this.animations.forEach((element, index) => {
+      if (element.name == this.selected) {
+        animationIndex = index;
+      }
     });
-    this.babylonService.animate(this.animations[index]);
+
+    if (animationIndex != undefined) {
+      console.log(this.animations[animationIndex]);
+      this.babylonService.animate(this.animations[animationIndex]);
+    } else {
+      this.complicatedAnimations.forEach((element, index) => {
+        if (element.name == this.selected) {
+          animationIndex = index;
+        }
+      });
+      if (animationIndex != undefined) {
+        console.log(this.complicatedAnimations[animationIndex]);
+        this.babylonService.animateComplicated(
+          this.complicatedAnimations[animationIndex]
+        );
+      }
+    }
+  }
+
+  stepForward() {
+    
+  }
+
+  stepBack() {
+    
+  }
+  
+  animateStepByStep() {
+
   }
 
   /**

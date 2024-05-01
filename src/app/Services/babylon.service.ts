@@ -83,6 +83,10 @@ export class BabylonService {
     return names;
   }
 
+  startAnimation(mesh: any, animations: any) {
+    this.scene.beginDirectAnimation(mesh, animations, 0, 4 * FRAME_RATE, false);
+  }
+
   /**
    * Метод запускает анимацию в случае, когда компонент представлен в виде множества деталей
    * @param animationParams
@@ -193,10 +197,6 @@ export class BabylonService {
         this.animate(newAnimationParams);
       });
     }
-  }
-
-  startAnimation(mesh: any, animations: any) {
-    this.scene.beginDirectAnimation(mesh, animations, 0, 4 * FRAME_RATE, false);
   }
 
   animateCamera() {
