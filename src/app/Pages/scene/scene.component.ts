@@ -43,11 +43,25 @@ export class SceneComponent implements AfterViewInit {
     this.animationNames = this.checkRoot()
       ? REPAIR_ANIMATION_NAMES
       : ANIMATION_NAMES;
+    console.log('IN CONSTRUCTOR')
+    console.log(this.complicatedAnimations);
+    console.log(this.animations)
   }
 
   ngAfterViewInit(): void {
     this.babylonService.createScene(this.canvasRef.nativeElement);
-    // this.babylonService.loadModel();
+    this.animations = this.checkRoot() ? REPAIR_ANIMATIONS : ANIMATIONS;
+    this.complicatedAnimations = this.checkRoot()
+      ? COMPLICATED_REPAIR_ANIMATIONS
+      : COMPLICATED_ANIMATIONS;
+    this.tips = this.checkRoot() ? REPAIR_TIPS : TIPS;
+    this.animationNames = this.checkRoot()
+      ? REPAIR_ANIMATION_NAMES
+      : ANIMATION_NAMES;
+      this.babylonService.loadModel();
+      console.log('AFTER INIT')
+      console.log(this.complicatedAnimations);
+      console.log(this.animations)    
   }
 
   /**
@@ -59,8 +73,13 @@ export class SceneComponent implements AfterViewInit {
   }
 
   startAnimation() {
+    
+    console.log('BEFORE ANIMATION')
+    console.log(this.complicatedAnimations);
+    console.log(this.animations)
     let animationIndex: number | undefined;
-
+    const complicateAnimations = this.complicatedAnimations;
+    const animations = this.animations;
     this.animations.forEach((element, index) => {
       if (element.name == this.selected) {
         animationIndex = index;
@@ -68,31 +87,37 @@ export class SceneComponent implements AfterViewInit {
     });
 
     if (animationIndex != undefined) {
-      console.log(this.animations[animationIndex]);
-      this.babylonService.animate(this.animations[animationIndex]);
+      console.log(animations[animationIndex]);
+      this.babylonService.animate(animations[animationIndex]);
     } else {
-      this.complicatedAnimations.forEach((element, index) => {
+      complicateAnimations.forEach((element, index) => {
         if (element.name == this.selected) {
           animationIndex = index;
         }
       });
       if (animationIndex != undefined) {
-        console.log(this.complicatedAnimations[animationIndex]);
+        console.log('ALL ANIMATIONS / FOUND')
+        console.log(complicateAnimations)
+        console.log(complicateAnimations[animationIndex]);
         this.babylonService.animateComplicated(
-          this.complicatedAnimations[animationIndex]
+          complicateAnimations[animationIndex]
         );
       }
     }
+    
+    console.log('AFTER ANIMATION')
+    console.log(this.complicatedAnimations);
+    console.log(this.animations)
   }
 
   stepForward() {
-    
+
   }
 
   stepBack() {
-    
+
   }
-  
+
   animateStepByStep() {
 
   }

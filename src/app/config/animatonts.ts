@@ -60,9 +60,6 @@ export const COMPLICATED_ANIMATIONS: ComplicatedAnimation[] = [
   {
     componentName: [
       'RightBackBlades',
-      'RightFrontBlades',
-      'LeftBackBlades',
-      'LeftFrontBlades',
     ],
     params: [
       { coordinates: [0, -SHIFT / 5], position: 'position.y' },
@@ -74,9 +71,6 @@ export const COMPLICATED_ANIMATIONS: ComplicatedAnimation[] = [
   {
     componentName: [
       'RightBackBlades',
-      'RightFrontBlades',
-      'LeftBackBlades',
-      'LeftFrontBlades',
     ],
     params: [
       { coordinates: [SHIFT, -SHIFT / 5], position: 'position.y' },

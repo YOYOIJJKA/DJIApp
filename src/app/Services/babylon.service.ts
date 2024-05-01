@@ -116,7 +116,8 @@ export class BabylonService {
    * position = alpha, beta, position.y, position.x, position.z
    * @param complicatedAnimationParams
    */
-  animateComplicated(complicatedAnimationParams: ComplicatedAnimation) {
+  animateComplicated(complicatedParams: ComplicatedAnimation) {
+    const complicatedAnimationParams = complicatedParams;
     if (!Array.isArray(complicatedAnimationParams.componentName)) {
       if (this.scene.getMeshByName(complicatedAnimationParams.componentName)) {
         const mesh = this.scene.getMeshByName(
@@ -139,9 +140,9 @@ export class BabylonService {
               value: coordinate,
             });
           });
-          newAnimation.setKeys(keyFrames);
-          complicatedAnimations.push(newAnimation);
         });
+        console.log('ALL ANIMATIONS')
+        console.log(complicatedAnimations)
         this.startAnimation(mesh, complicatedAnimations);
       } else {
         complicatedAnimationParams.componentName = this.getChildNames(
@@ -153,6 +154,8 @@ export class BabylonService {
       complicatedAnimationParams.componentName.forEach((element) => {
         const newAnimationParams = complicatedAnimationParams;
         newAnimationParams.componentName = element;
+        console.log('INSIDE ARRAY ELEMENT IS')
+        console.log(element);
         this.animateComplicated(newAnimationParams);
       });
     }
