@@ -1,11 +1,5 @@
-mat-expansion-panel {
-  background-color: lightgrey;
-}
 .background {
   background-color: Gainsboro;
-}
-.icon {
-  height: 50px;
 }
 .flex {
   width: 100%;
@@ -20,11 +14,6 @@ mat-expansion-panel {
   padding: 1%;
   border: 1px solid lightgrey;
   border-radius: 5px;
-}
-.buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1%;
 }
 .tables {
   width: 50%;

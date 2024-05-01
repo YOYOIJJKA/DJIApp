@@ -140,6 +140,9 @@ export class BabylonService {
         });
         this.startAnimation(mesh, complicatedAnimations);
       } else {
+        complicatedAnimationParams.componentName = this.getChildNames(
+          complicatedAnimationParams.componentName as string
+        );
         this.animateComplicatedArray(complicatedAnimationParams);
       }
     } else {

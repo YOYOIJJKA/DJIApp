@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../../Services/auth.service';
+import { User } from '../../Interfaces/user';
 
 @Component({
   selector: 'app-auth',
@@ -13,7 +15,8 @@ export class AuthComponent {
   constructor(
     public formBuilder: FormBuilder,
     public router: Router,
-    public snackBar: MatSnackBar
+    public snackBar: MatSnackBar,
+    public authService: AuthService
   ) {
     this.authForm = formBuilder.group({
       login: [
@@ -27,8 +30,29 @@ export class AuthComponent {
     });
   }
 
+  getFormInput(): User | undefined {
+    if (this.authForm.valid) {
+      return {
+        email: this.authForm.getRawValue().login,
+        password: this.authForm.getRawValue().password,
+      };
+    } else {
+      return undefined;
+    }
+  }
+
   logIn() {
-    if (!this.authForm.invalid) {
+    const newUser = this.getFormInput();
+    if (newUser) {
+      this.authService.saveUser(newUser);
+      this.router.navigate(['main-page']);
+    }
+  }
+
+  registrate() {
+    const newUser = this.getFormInput();
+    if (newUser) {
+      this.authService.saveUser(newUser);
       this.router.navigate(['main-page']);
     }
   }

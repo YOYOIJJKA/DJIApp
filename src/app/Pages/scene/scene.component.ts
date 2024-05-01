@@ -41,7 +41,7 @@ export class SceneComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.babylonService.createScene(this.canvasRef.nativeElement);
-    this.babylonService.loadModel();
+    // this.babylonService.loadModel();
   }
 
   test() {
