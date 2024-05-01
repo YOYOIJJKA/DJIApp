@@ -43,25 +43,11 @@ export class SceneComponent implements AfterViewInit {
     this.animationNames = this.checkRoot()
       ? REPAIR_ANIMATION_NAMES
       : ANIMATION_NAMES;
-    console.log('IN CONSTRUCTOR')
-    console.log(this.complicatedAnimations);
-    console.log(this.animations)
   }
 
   ngAfterViewInit(): void {
     this.babylonService.createScene(this.canvasRef.nativeElement);
-    this.animations = this.checkRoot() ? REPAIR_ANIMATIONS : ANIMATIONS;
-    this.complicatedAnimations = this.checkRoot()
-      ? COMPLICATED_REPAIR_ANIMATIONS
-      : COMPLICATED_ANIMATIONS;
-    this.tips = this.checkRoot() ? REPAIR_TIPS : TIPS;
-    this.animationNames = this.checkRoot()
-      ? REPAIR_ANIMATION_NAMES
-      : ANIMATION_NAMES;
-      this.babylonService.loadModel();
-      console.log('AFTER INIT')
-      console.log(this.complicatedAnimations);
-      console.log(this.animations)    
+    this.babylonService.loadModel();
   }
 
   /**
@@ -73,13 +59,9 @@ export class SceneComponent implements AfterViewInit {
   }
 
   startAnimation() {
-    
-    console.log('BEFORE ANIMATION')
-    console.log(this.complicatedAnimations);
-    console.log(this.animations)
     let animationIndex: number | undefined;
     const complicateAnimations = this.complicatedAnimations;
-    const animations = this.animations;
+    const animations = { ...this.animations };
     this.animations.forEach((element, index) => {
       if (element.name == this.selected) {
         animationIndex = index;
@@ -96,31 +78,18 @@ export class SceneComponent implements AfterViewInit {
         }
       });
       if (animationIndex != undefined) {
-        console.log('ALL ANIMATIONS / FOUND')
-        console.log(complicateAnimations)
-        console.log(complicateAnimations[animationIndex]);
         this.babylonService.animateComplicated(
           complicateAnimations[animationIndex]
         );
       }
     }
-    
-    console.log('AFTER ANIMATION')
-    console.log(this.complicatedAnimations);
-    console.log(this.animations)
   }
 
-  stepForward() {
+  stepForward() {}
 
-  }
+  stepBack() {}
 
-  stepBack() {
-
-  }
-
-  animateStepByStep() {
-
-  }
+  animateStepByStep() {}
 
   /**
    * Метод запускает анимацию "Взрыв" или останавливает ее, если она запущена

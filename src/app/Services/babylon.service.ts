@@ -11,6 +11,8 @@ import { ComplicatedAnimation } from '../Interfaces/complicated-animation';
 export class BabylonService {
   private engine!: BABYLON.Engine;
   private scene!: BABYLON.Scene;
+  private mesh?: BABYLON.Nullable<BABYLON.AbstractMesh>;
+  private currentAnimations?: BABYLON.Animation[];
 
   createScene(canvas: HTMLCanvasElement): void {
     this.engine = new BABYLON.Engine(canvas, true);
@@ -83,9 +85,24 @@ export class BabylonService {
     return names;
   }
 
-  startAnimation(mesh: any, animations: any) {
-    this.scene.beginDirectAnimation(mesh, animations, 0, 4 * FRAME_RATE, false);
-  }
+  startAnimation = (
+    mesh: any,
+    animations: any,
+    beginFrame: number,
+    endFrame: number
+  ) => {
+    console.log(mesh);
+    console.log(animations);
+    console.log(beginFrame);
+    console.log(endFrame);
+    this.scene.beginDirectAnimation(
+      mesh,
+      animations,
+      beginFrame,
+      endFrame,
+      false
+    );
+  };
 
   /**
    * Метод запускает анимацию в случае, когда компонент представлен в виде множества деталей
@@ -117,7 +134,8 @@ export class BabylonService {
    * @param complicatedAnimationParams
    */
   animateComplicated(complicatedParams: ComplicatedAnimation) {
-    const complicatedAnimationParams = complicatedParams;
+    const complicatedAnimationParams = { ...complicatedParams };
+    console.log(complicatedAnimationParams);
     if (!Array.isArray(complicatedAnimationParams.componentName)) {
       if (this.scene.getMeshByName(complicatedAnimationParams.componentName)) {
         const mesh = this.scene.getMeshByName(
@@ -125,25 +143,39 @@ export class BabylonService {
         );
         const complicatedAnimations: BABYLON.Animation[] = [];
 
+        let highestFrame = 0;
+        let lowestFrame = 0;
+        let index = 0;
+
         complicatedAnimationParams.params.forEach((params) => {
           const newAnimation = new BABYLON.Animation(
-            'Complicated' + complicatedAnimationParams.componentName,
+            'Complicated' +
+              complicatedAnimationParams.componentName +
+              params.position +
+              params.coordinates,
             params.position,
             FRAME_RATE,
             BABYLON.Animation.ANIMATIONTYPE_FLOAT,
             BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
           );
           const keyFrames: BABYLON.IAnimationKey[] = [];
-          params.coordinates.forEach((coordinate, index) => {
+          params.coordinates.forEach((coordinate) => {
             keyFrames.push({
               frame: index * FRAME_RATE,
               value: coordinate,
             });
+            highestFrame = (index) * FRAME_RATE;
+            index++;
           });
+          newAnimation.setKeys(keyFrames);
+          complicatedAnimations.push(newAnimation);
+          this.startAnimation(mesh, [newAnimation], lowestFrame, highestFrame)
+          lowestFrame = highestFrame;
         });
-        console.log('ALL ANIMATIONS')
-        console.log(complicatedAnimations)
-        this.startAnimation(mesh, complicatedAnimations);
+        console.log('ALL ANIMATIONS');
+        console.log(complicatedAnimations);
+        this.mesh = mesh;
+        this.currentAnimations = complicatedAnimations;
       } else {
         complicatedAnimationParams.componentName = this.getChildNames(
           complicatedAnimationParams.componentName as string
@@ -154,8 +186,6 @@ export class BabylonService {
       complicatedAnimationParams.componentName.forEach((element) => {
         const newAnimationParams = complicatedAnimationParams;
         newAnimationParams.componentName = element;
-        console.log('INSIDE ARRAY ELEMENT IS')
-        console.log(element);
         this.animateComplicated(newAnimationParams);
       });
     }
@@ -165,7 +195,8 @@ export class BabylonService {
    * Метод запускает анимацию компонентов по введенным параметрам
    * @param animationParams параметры анимации
    */
-  animate(animationParams: AnimationParams) {
+  animate(simpleParams: AnimationParams) {
+    const animationParams = { ...simpleParams };
     if (!Array.isArray(animationParams.componentName)) {
       if (this.scene.getMeshByName(animationParams.componentName)) {
         const mesh = this.scene.getMeshByName(animationParams.componentName);
@@ -186,7 +217,7 @@ export class BabylonService {
           value: animationParams.to,
         });
         slide.setKeys(keyFrames);
-        this.startAnimation(mesh, [slide]);
+        this.startAnimation(mesh, [slide], 0, FRAME_RATE);
       } else {
         animationParams.componentName = this.getChildNames(
           animationParams.componentName
