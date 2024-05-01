@@ -44,9 +44,6 @@ export class SceneComponent implements AfterViewInit {
     // this.babylonService.loadModel();
   }
 
-  test() {
-    this.babylonService.animateComplicated(COMPLICATED_ANIMATIONS[0]);
-  }
 
   /**
    * Метод проверяет url == scene-repair

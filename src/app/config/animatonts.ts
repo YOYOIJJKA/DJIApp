@@ -65,8 +65,9 @@ export const COMPLICATED_ANIMATIONS: ComplicatedAnimation[] = [
       'LeftFrontBlades',
     ],
     params: [
-      { coordinates: [0, SHIFT], position: 'position.y' },
-      { coordinates: [0, SHIFT], position: 'position.z' },
+      { coordinates: [0, -SHIFT / 5], position: 'position.y' },
+      { coordinates: [0, SHIFT], position: 'alpha' },
+      { coordinates: [-SHIFT/5, SHIFT], position: 'position.y' },
     ],
     name: 'Снятие лопастей',
   },
