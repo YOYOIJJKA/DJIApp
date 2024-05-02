@@ -242,8 +242,8 @@ export class BabylonService {
     if (this.meshes && this.currentAnimations) {
       const highestFrame = 100;
       const animation = this.currentAnimations[animationIndex];
-      console.log(animation.getKeys());
-      console.log(animation.getKeys().reverse());
+      // let newKeys = animation.getKeys();
+      // newKeys.reverse();
       console.log('INCOMING ANIMATION IS');
       console.log(animation);
       this.meshes.forEach((mesh) => {

@@ -2,7 +2,7 @@
 <body>
   <mat-form-field>
     <mat-label>Сценарий анимации</mat-label>
-    <mat-select [(value)]="selected">
+    <mat-select [(value)]="selected" (selectionChange)="valueChanged()">
       <mat-optgroup label="Анимации в один шаг">
         <mat-option
           *ngFor="let animation of animations"
@@ -20,12 +20,27 @@
     </mat-select>
   </mat-form-field>
   <div class="buttons">
-    <button mat-raised-button color="primary" (click)="startAnimation()">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="startAnimation()"
+      *ngIf="isSimpleAnimation"
+    >
       Запустить анимацию
     </button>
-    <button (click)="stepForward()">
-      Шаг вперед
-    </button>
+    <ng-container *ngIf="!isSimpleAnimation">
+      <button mat-raised-button color="primary" (click)="stepBack()"><<</button>
+      <button
+        mat-flat-button
+        color="secondary"
+        (click)="clearCurrentAnimation()"
+      >
+        Текущий шаг: {{ currentAnimation }}
+      </button>
+      <button mat-raised-button color="primary" (click)="stepForward()">
+        >>
+      </button>
+    </ng-container>
     <button mat-raised-button color="primary" (click)="animateCamera()">
       Облет модели
     </button>

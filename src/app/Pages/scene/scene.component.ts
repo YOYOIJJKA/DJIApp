@@ -33,6 +33,7 @@ export class SceneComponent implements AfterViewInit {
   animationNames: string[];
   selected: string = '';
   currentAnimation: number = 0;
+  isSimpleAnimation: boolean = true;
 
   constructor(private babylonService: BabylonService, private router: Router) {
     this.animations = this.checkRoot() ? REPAIR_ANIMATIONS : ANIMATIONS;
@@ -47,7 +48,7 @@ export class SceneComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.babylonService.createScene(this.canvasRef.nativeElement);
-    this.babylonService.loadModel();
+    // this.babylonService.loadModel();
   }
 
   /**
@@ -58,10 +59,32 @@ export class SceneComponent implements AfterViewInit {
     return this.router.url == '/scene-repair';
   }
 
-  startAnimation() {
-    this.babylonService.clearCurrentAnimation()
-    let animationIndex: number | undefined;
+  valueChanged() {
     const complicateAnimations = this.complicatedAnimations;
+    let animationIndex: number | undefined;
+
+    complicateAnimations.forEach((element, index) => {
+      if (element.name == this.selected) {
+        animationIndex = index;
+      }
+    });
+    if (animationIndex != undefined) {
+      this.isSimpleAnimation = false;
+      this.babylonService.animateComplicated(
+        complicateAnimations[animationIndex]
+      );
+    } else {
+      this.isSimpleAnimation = true;
+    }
+  }
+
+  clearCurrentAnimation() {
+    this.currentAnimation = 0;
+  }
+
+  startAnimation() {
+    this.babylonService.clearCurrentAnimation();
+    let animationIndex: number | undefined;
     const animations = { ...this.animations };
     this.animations.forEach((element, index) => {
       if (element.name == this.selected) {
@@ -70,19 +93,7 @@ export class SceneComponent implements AfterViewInit {
     });
 
     if (animationIndex != undefined) {
-      console.log(animations[animationIndex]);
       this.babylonService.animate(animations[animationIndex]);
-    } else {
-      complicateAnimations.forEach((element, index) => {
-        if (element.name == this.selected) {
-          animationIndex = index;
-        }
-      });
-      if (animationIndex != undefined) {
-        this.babylonService.animateComplicated(
-          complicateAnimations[animationIndex]
-        );
-      }
     }
   }
 

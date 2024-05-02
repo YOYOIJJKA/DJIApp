@@ -41,3 +41,11 @@ h2 {
 .border-bottom {
   border-bottom: 2px solid lightgrey;
 }
+mat-expansion-panel-header {
+  align-items: center;
+  justify-content: center;
+  font-size: large;
+}
+mat-expansion-panel {
+  background-color: Gainsboro;
+}
