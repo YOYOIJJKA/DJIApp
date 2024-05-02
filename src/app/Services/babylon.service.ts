@@ -164,16 +164,14 @@ export class BabylonService {
               frame: index * FRAME_RATE,
               value: coordinate,
             });
-            highestFrame = (index) * FRAME_RATE;
+            highestFrame = index * FRAME_RATE;
             index++;
           });
           newAnimation.setKeys(keyFrames);
           complicatedAnimations.push(newAnimation);
-          this.startAnimation(mesh, [newAnimation], lowestFrame, highestFrame)
+          // this.startAnimation(mesh, [newAnimation], lowestFrame, highestFrame);
           lowestFrame = highestFrame;
         });
-        console.log('ALL ANIMATIONS');
-        console.log(complicatedAnimations);
         this.mesh = mesh;
         this.currentAnimations = complicatedAnimations;
       } else {
@@ -230,6 +228,26 @@ export class BabylonService {
         newAnimationParams.componentName = element;
         this.animate(newAnimationParams);
       });
+    }
+  }
+
+  stepForward(animationIndex: number) {
+    if (this.mesh && this.currentAnimations) {
+      const hightstFrame =
+        this.currentAnimations[animationIndex].getHighestFrame();
+      const animation = { ...this.currentAnimations[animationIndex] };
+      console.log(animation)
+      this.startAnimation(this.mesh, [animation], 0, hightstFrame);
+    }
+  }
+
+  stepBack(animationIndex: number) {
+    if (this.mesh && this.currentAnimations) {
+      const hightstFrame =
+        this.currentAnimations[animationIndex].getHighestFrame();
+      const animation = { ...this.currentAnimations[animationIndex] };
+      console.log(animation);
+      this.startAnimation(this.mesh, [animation], 0, hightstFrame);
     }
   }
 

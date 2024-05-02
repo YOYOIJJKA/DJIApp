@@ -85,9 +85,13 @@ export class SceneComponent implements AfterViewInit {
     }
   }
 
-  stepForward() {}
+  stepForward() {
+    this.babylonService.stepForward(1);
+  }
 
-  stepBack() {}
+  stepBack() {
+    this.babylonService.stepBack(1);
+  }
 
   animateStepByStep() {}
 
