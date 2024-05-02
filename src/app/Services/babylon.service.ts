@@ -11,7 +11,7 @@ import { ComplicatedAnimation } from '../Interfaces/complicated-animation';
 export class BabylonService {
   private engine!: BABYLON.Engine;
   private scene!: BABYLON.Scene;
-  private mesh?: BABYLON.Nullable<BABYLON.AbstractMesh>;
+  private meshes: BABYLON.Nullable<BABYLON.AbstractMesh>[] = [];
   private currentAnimations?: BABYLON.Animation[];
 
   createScene(canvas: HTMLCanvasElement): void {
@@ -91,10 +91,6 @@ export class BabylonService {
     beginFrame: number,
     endFrame: number
   ) => {
-    console.log(mesh);
-    console.log(animations);
-    console.log(beginFrame);
-    console.log(endFrame);
     this.scene.beginDirectAnimation(
       mesh,
       animations,
@@ -103,6 +99,11 @@ export class BabylonService {
       false
     );
   };
+
+  clearCurrentAnimation () {
+    this.meshes = [];
+    this.currentAnimations = [];
+  }
 
   /**
    * Метод запускает анимацию в случае, когда компонент представлен в виде множества деталей
@@ -135,7 +136,6 @@ export class BabylonService {
    */
   animateComplicated(complicatedParams: ComplicatedAnimation) {
     const complicatedAnimationParams = { ...complicatedParams };
-    console.log(complicatedAnimationParams);
     if (!Array.isArray(complicatedAnimationParams.componentName)) {
       if (this.scene.getMeshByName(complicatedAnimationParams.componentName)) {
         const mesh = this.scene.getMeshByName(
@@ -143,9 +143,7 @@ export class BabylonService {
         );
         const complicatedAnimations: BABYLON.Animation[] = [];
 
-        let highestFrame = 0;
-        let lowestFrame = 0;
-        let index = 0;
+        // let index = 0;
 
         complicatedAnimationParams.params.forEach((params) => {
           const newAnimation = new BABYLON.Animation(
@@ -159,20 +157,17 @@ export class BabylonService {
             BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
           );
           const keyFrames: BABYLON.IAnimationKey[] = [];
-          params.coordinates.forEach((coordinate) => {
+          params.coordinates.forEach((coordinate, index) => {
             keyFrames.push({
               frame: index * FRAME_RATE,
               value: coordinate,
             });
-            highestFrame = index * FRAME_RATE;
-            index++;
           });
           newAnimation.setKeys(keyFrames);
           complicatedAnimations.push(newAnimation);
-          // this.startAnimation(mesh, [newAnimation], lowestFrame, highestFrame);
-          lowestFrame = highestFrame;
+          // this.startAnimation(mesh, [newAnimation], 0, highestFrame);
         });
-        this.mesh = mesh;
+        this.meshes.push(mesh);
         this.currentAnimations = complicatedAnimations;
       } else {
         complicatedAnimationParams.componentName = this.getChildNames(
@@ -232,22 +227,28 @@ export class BabylonService {
   }
 
   stepForward(animationIndex: number) {
-    if (this.mesh && this.currentAnimations) {
-      const hightstFrame =
-        this.currentAnimations[animationIndex].getHighestFrame();
-      const animation = { ...this.currentAnimations[animationIndex] };
-      console.log(animation)
-      this.startAnimation(this.mesh, [animation], 0, hightstFrame);
+    if (this.meshes && this.currentAnimations) {
+      const highestFrame = 100;
+      const animation = this.currentAnimations[animationIndex];
+      console.log('INCOMING ANIMATION IS');
+      console.log(animation);
+      this.meshes.forEach((mesh) => {
+        this.startAnimation(mesh, [animation], 0, highestFrame);
+      });
     }
   }
 
   stepBack(animationIndex: number) {
-    if (this.mesh && this.currentAnimations) {
-      const hightstFrame =
-        this.currentAnimations[animationIndex].getHighestFrame();
-      const animation = { ...this.currentAnimations[animationIndex] };
+    if (this.meshes && this.currentAnimations) {
+      const highestFrame = 100;
+      const animation = this.currentAnimations[animationIndex];
+      console.log(animation.getKeys());
+      console.log(animation.getKeys().reverse());
+      console.log('INCOMING ANIMATION IS');
       console.log(animation);
-      this.startAnimation(this.mesh, [animation], 0, hightstFrame);
+      this.meshes.forEach((mesh) => {
+        this.startAnimation(mesh, [animation], 0, highestFrame);
+      });
     }
   }
 

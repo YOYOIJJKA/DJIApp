@@ -59,6 +59,7 @@ export class SceneComponent implements AfterViewInit {
   }
 
   startAnimation() {
+    this.babylonService.clearCurrentAnimation()
     let animationIndex: number | undefined;
     const complicateAnimations = this.complicatedAnimations;
     const animations = { ...this.animations };
@@ -86,11 +87,13 @@ export class SceneComponent implements AfterViewInit {
   }
 
   stepForward() {
-    this.babylonService.stepForward(1);
+    this.babylonService.stepForward(this.currentAnimation);
+    this.currentAnimation++;
   }
 
   stepBack() {
-    this.babylonService.stepBack(1);
+    this.babylonService.stepBack(this.currentAnimation);
+    this.currentAnimation--;
   }
 
   animateStepByStep() {}
