@@ -119,12 +119,12 @@ export class BabylonService {
     }
   }
 
-  animateComplicatedArray(complicatedAnimationParams: ComplicatedAnimation) {
+  createComplicatedAnimationArray(complicatedAnimationParams: ComplicatedAnimation) {
     if (Array.isArray(complicatedAnimationParams.componentName)) {
       complicatedAnimationParams.componentName.forEach((componentName) => {
         const newComplicatedAnimationParams = complicatedAnimationParams;
         newComplicatedAnimationParams.componentName = componentName;
-        this.animateComplicated(newComplicatedAnimationParams);
+        this.createComplicatedAnimation(newComplicatedAnimationParams);
       });
     }
   }
@@ -134,7 +134,7 @@ export class BabylonService {
    * position = alpha, beta, position.y, position.x, position.z
    * @param complicatedAnimationParams
    */
-  animateComplicated(complicatedParams: ComplicatedAnimation) {
+  createComplicatedAnimation(complicatedParams: ComplicatedAnimation) {
     const complicatedAnimationParams = { ...complicatedParams };
     if (!Array.isArray(complicatedAnimationParams.componentName)) {
       if (this.scene.getMeshByName(complicatedAnimationParams.componentName)) {
@@ -173,13 +173,13 @@ export class BabylonService {
         complicatedAnimationParams.componentName = this.getChildNames(
           complicatedAnimationParams.componentName as string
         );
-        this.animateComplicatedArray(complicatedAnimationParams);
+        this.createComplicatedAnimationArray(complicatedAnimationParams);
       }
     } else {
       complicatedAnimationParams.componentName.forEach((element) => {
         const newAnimationParams = complicatedAnimationParams;
         newAnimationParams.componentName = element;
-        this.animateComplicated(newAnimationParams);
+        this.createComplicatedAnimation(newAnimationParams);
       });
     }
   }
@@ -250,6 +250,10 @@ export class BabylonService {
         this.startAnimation(mesh, [animation], 0, highestFrame);
       });
     }
+  }
+
+  getCurrentAnimationsLength(): number | undefined { 
+    return this.currentAnimations?.length
   }
 
   animateCamera() {

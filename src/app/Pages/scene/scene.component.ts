@@ -60,17 +60,21 @@ export class SceneComponent implements AfterViewInit {
   }
 
   valueChanged() {
+    this.currentAnimation = 0;
+    this.setComplicatedAnimation(this.selected);
+  }
+
+  setComplicatedAnimation(searchValue: string) {
     const complicateAnimations = this.complicatedAnimations;
     let animationIndex: number | undefined;
-
     complicateAnimations.forEach((element, index) => {
-      if (element.name == this.selected) {
+      if (element.name == searchValue) {
         animationIndex = index;
       }
     });
     if (animationIndex != undefined) {
       this.isSimpleAnimation = false;
-      this.babylonService.animateComplicated(
+      this.babylonService.createComplicatedAnimation(
         complicateAnimations[animationIndex]
       );
     } else {
@@ -98,16 +102,36 @@ export class SceneComponent implements AfterViewInit {
   }
 
   stepForward() {
-    this.babylonService.stepForward(this.currentAnimation);
-    this.currentAnimation++;
+    const animationsLength = this.babylonService.getCurrentAnimationsLength();
+    if (animationsLength && animationsLength > this.currentAnimation) {
+      this.babylonService.stepForward(this.currentAnimation);
+      this.currentAnimation++;
+    }
   }
 
   stepBack() {
-    this.babylonService.stepBack(this.currentAnimation);
-    this.currentAnimation--;
+    const animations = COMPLICATED_ANIMATIONS[0];
+    let newAnimations = { ...animations };
+    newAnimations.params = newAnimations.params.map((param) => {
+      const newParam = { ...param, coordinates: [...param.coordinates].reverse() };
+      return newParam;
+    });
+    return newAnimations.params.reverse()
+    if (this.currentAnimation > 0) {
+      this.babylonService.stepBack(this.currentAnimation - 1);
+      this.currentAnimation--;
+    }
   }
 
-  animateStepByStep() {}
+  reverseAnimation() {
+    const animations = COMPLICATED_ANIMATIONS[0];
+    let newAnimation = { ...animations };
+    newAnimation.params = newAnimation.params.map((param) => {
+      const newParam = { ...param, coordinates: [...param.coordinates].reverse() };
+      return newParam;
+    });
+    return newAnimation.params.reverse()
+  }
 
   /**
    * Метод запускает анимацию "Взрыв" или останавливает ее, если она запущена

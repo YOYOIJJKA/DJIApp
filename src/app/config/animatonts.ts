@@ -60,18 +60,18 @@ export const COMPLICATED_ANIMATIONS: ComplicatedAnimation[] = [
   {
     componentName: ['RightBackBlades'],
     params: [
-      { coordinates: [0, -SHIFT / 5], position: 'position.y' },
+      { coordinates: [0, -SHIFT / 10], position: 'position.y' },
       { coordinates: [0, Math.PI / 12], position: 'rotation.y' },
-      { coordinates: [-SHIFT / 5, SHIFT], position: 'position.y' },
+      { coordinates: [-SHIFT / 10, SHIFT], position: 'position.y' },
     ],
     name: 'Снятие лопастей',
   },
   {
     componentName: ['RightBackBlades'],
     params: [
-      { coordinates: [SHIFT, -SHIFT / 5], position: 'position.y' },
+      { coordinates: [SHIFT, -SHIFT / 10], position: 'position.y' },
       { coordinates: [Math.PI / 12, 0], position: 'rotation.y' },
-      { coordinates: [-SHIFT / 5, 0], position: 'position.y' },
+      { coordinates: [-SHIFT / 10, 0], position: 'position.y' },
     ],
     name: 'Установка лопастей',
   },
