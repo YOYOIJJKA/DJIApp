@@ -16,6 +16,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { TestsComponent } from './Pages/tests/tests.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatExpansionModule,
     MatRadioModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],

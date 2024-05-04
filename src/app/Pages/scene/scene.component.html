@@ -2,7 +2,11 @@
 <body>
   <mat-form-field>
     <mat-label>Сценарий анимации</mat-label>
-    <mat-select [(value)]="selected" (selectionChange)="valueChanged()">
+    <mat-select
+      [(value)]="selected"
+      (selectionChange)="valueChanged()"
+      [disabled]="isDisabledSelect"
+    >
       <mat-optgroup label="Анимации в один шаг">
         <mat-option
           *ngFor="let animation of animations"
@@ -77,5 +81,9 @@
       >
     </mat-form-field>
   </div>
+  <mat-progress-spinner
+    color="primary"
+    [mode]="spinnerMode"
+  ></mat-progress-spinner>
   <canvas #canvas></canvas>
 </body>

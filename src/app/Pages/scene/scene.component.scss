@@ -21,3 +21,8 @@ canvas {
 mat-form-field {
   width: 30%;
 }
+mat-progress-spinner {
+  position: absolute;
+  top: calc(height/2);
+  left: calc(width/2);
+}

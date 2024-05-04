@@ -2,18 +2,15 @@ import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { BabylonService } from '../../Services/babylon.service';
 import {
   ANIMATIONS,
-  ANIMATION_NAMES,
   COMPLICATED_ANIMATIONS,
   COMPLICATED_REPAIR_ANIMATIONS,
   EXPLOSION_ANIMATIONS,
   REPAIR_ANIMATIONS,
-  REPAIR_ANIMATION_NAMES,
-  REPAIR_TIPS,
-  TIPS,
 } from '../../config/animatonts';
 import { Router } from '@angular/router';
 import { AnimationParams } from '../../Interfaces/animation';
 import { ComplicatedAnimation } from '../../Interfaces/complicated-animation';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-scene',
@@ -27,28 +24,32 @@ export class SceneComponent implements AfterViewInit {
   animations: AnimationParams[];
   complicatedAnimations: ComplicatedAnimation[];
   animationsProcessing: boolean = false;
-  tips: string[];
-  tip: string = '';
+  tips: string[] = [];
+  tip?: string;
   visible: boolean = false;
-  animationNames: string[];
+  // animationNames: string[];
   selected: string = '';
   currentAnimation: number = 0;
   isSimpleAnimation: boolean = true;
+  spinnerMode: ProgressSpinnerMode = 'indeterminate';
+  isDisabledSelect: boolean = true;
 
   constructor(private babylonService: BabylonService, private router: Router) {
     this.animations = this.checkRoot() ? REPAIR_ANIMATIONS : ANIMATIONS;
     this.complicatedAnimations = this.checkRoot()
       ? COMPLICATED_REPAIR_ANIMATIONS
       : COMPLICATED_ANIMATIONS;
-    this.tips = this.checkRoot() ? REPAIR_TIPS : TIPS;
-    this.animationNames = this.checkRoot()
-      ? REPAIR_ANIMATION_NAMES
-      : ANIMATION_NAMES;
+    // this.animationNames = this.checkRoot()
+    //   ? REPAIR_ANIMATION_NAMES
+    //   : ANIMATION_NAMES;
   }
 
   ngAfterViewInit(): void {
     this.babylonService.createScene(this.canvasRef.nativeElement);
-    this.babylonService.loadModel();
+    this.babylonService.loadModel().then(() => {
+      this.spinnerMode = 'determinate';
+      this.isDisabledSelect = false;
+    });
   }
 
   /**
@@ -73,7 +74,13 @@ export class SceneComponent implements AfterViewInit {
       }
     });
     if (animationIndex != undefined) {
+      this.tips = [];
       this.isSimpleAnimation = false;
+      complicateAnimations[animationIndex].params.forEach((param) => {
+        if (param.tip) {
+          this.tips.push(param.tip);
+        }
+      });
       this.babylonService.createComplicatedAnimation(
         complicateAnimations[animationIndex],
         false
@@ -104,6 +111,10 @@ export class SceneComponent implements AfterViewInit {
     });
 
     if (animationIndex != undefined) {
+      this.tip = animations[animationIndex].tip;
+      if (this.tip) {
+        this.visible = true;
+      }
       this.babylonService.animate(animations[animationIndex]);
     }
   }
@@ -111,6 +122,8 @@ export class SceneComponent implements AfterViewInit {
   stepForward() {
     const animationsLength = this.babylonService.getCurrentAnimationsLength();
     if (animationsLength && animationsLength > this.currentAnimation) {
+      this.tip = this.tips[this.currentAnimation];
+      this.visible = Boolean(this.tip);
       this.babylonService.stepForward(this.currentAnimation);
       this.currentAnimation++;
     }
@@ -118,8 +131,10 @@ export class SceneComponent implements AfterViewInit {
 
   stepBack() {
     if (this.currentAnimation > 0) {
-      this.babylonService.stepBack(this.currentAnimation - 1);
       this.currentAnimation--;
+      this.tip = this.tips[this.currentAnimation];
+      this.visible = Boolean(this.tip);
+      this.babylonService.stepBack(this.currentAnimation);
     }
   }
 
@@ -135,7 +150,12 @@ export class SceneComponent implements AfterViewInit {
       this.isBlowed = true;
     } else {
       EXPLOSION_ANIMATIONS.forEach((animation) => {
-        this.babylonService.animate(animation);
+        const newAnimation = {
+          ...animation,
+          from: animation.to,
+          to: animation.from,
+        };
+        this.babylonService.animate(newAnimation);
       });
       this.isBlowed = false;
     }

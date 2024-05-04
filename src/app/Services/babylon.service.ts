@@ -66,12 +66,15 @@ export class BabylonService {
     skybox.material = backgroundMaterial;
   }
 
-  loadModel() {
-    BABYLON.SceneLoader.ImportMesh(
+  loadModel(): Promise<BABYLON.ISceneLoaderAsyncResult> {
+    return BABYLON.SceneLoader.ImportMeshAsync(
       '',
       'https://dl.dropbox.com/scl/fi/9w4y83j5dpffc9rflq8a7/DJI.glb?rlkey=ofykk9bn8gd86uv4lhkxvwu5j&raw=1',
       'DJI.glb',
-      this.scene
+      this.scene,
+      () => {
+        return true;
+      }
     );
   }
 
@@ -261,8 +264,7 @@ export class BabylonService {
     if (this.meshes && this.currentAnimations) {
       const highestFrame = 100;
       const animation = this.currentAnimations[animationIndex];
-      console.log('INCOMING ANIMATION IS');
-      console.log(animation);
+
       this.meshes.forEach((mesh) => {
         this.startAnimation(mesh, [animation], 0, highestFrame);
       });
