@@ -17,6 +17,25 @@ export class TestsComponent {
     }
   }
   /**
+   * Преобразует строку - приводит все символы к нижнему регистру и заменяет Ё на Е
+   * @param string строка, которую необходимо преобразовать
+   * @returns строка, приведенная к нижнему регистру и с заменой Ё на Е
+   */
+  transformString(string: string | undefined): string | undefined {
+    if (string) {
+      return string.toLowerCase().replaceAll('ё', 'е');
+    } else {
+      return undefined;
+    }
+  }
+  /**
+   * Метод открывает всплывающее окно с сообщением. Закрытие окна по нажатию "ОК"
+   * @param message отображаемое сообщение
+   */
+  openSnackBar(message: string): void {
+    this.snackBar.open(message, 'ОК');
+  }
+  /**
    * Методя для обработки количества правильных ответов в массиве answers
    */
   checkAnswers(): void {
@@ -31,25 +50,6 @@ export class TestsComponent {
         this.openSnackBar('Количество правильных ответов: ' + counter);
       }
     } else this.openSnackBar('Пожалуйста, ответьте хотя бы на один вопрос');
-  }
-/**
- * Преобразует строку - приводит все символы к нижнему регистру и заменяет Ё на Е
- * @param string строка, которую необходимо преобразовать
- * @returns строка, приведенная к нижнему регистру и с заменой Ё на Е
- */
-  transformString(string: string | undefined): string | undefined {
-    if (string) {
-      return string.toLowerCase().replaceAll('ё', 'е');
-    } else {
-      return undefined;
-    }
-  }
-  /**
-   * Метод открывает всплывающее окно с сообщением. Закрытие окна по нажатию "ОК"
-   * @param message отображаемое сообщение
-   */
-  openSnackBar(message: string): void {
-    this.snackBar.open(message, 'ОК');
   }
 
   /**

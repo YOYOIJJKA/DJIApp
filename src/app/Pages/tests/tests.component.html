@@ -4,7 +4,6 @@
     <h2>Вопросы без картинок</h2>
     <div *ngFor="let test of tests">
       <div class="test" *ngIf="!test.img && test.answers">
-        <img *ngIf="test.img" [src]="test.img" />
         <mat-radio-group [(ngModel)]="answers[test.index!]">
           <mat-label>{{ test.question }}</mat-label>
           <div class="answers">
