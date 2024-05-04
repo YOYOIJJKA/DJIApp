@@ -48,7 +48,7 @@ export class SceneComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.babylonService.createScene(this.canvasRef.nativeElement);
-    // this.babylonService.loadModel();
+    this.babylonService.loadModel();
   }
 
   /**
@@ -75,7 +75,14 @@ export class SceneComponent implements AfterViewInit {
     if (animationIndex != undefined) {
       this.isSimpleAnimation = false;
       this.babylonService.createComplicatedAnimation(
-        complicateAnimations[animationIndex]
+        complicateAnimations[animationIndex],
+        false
+      );
+      this.babylonService.createComplicatedAnimation(
+        this.babylonService.reverseAnimation(
+          complicateAnimations[animationIndex]
+        ),
+        true
       );
     } else {
       this.isSimpleAnimation = true;
@@ -110,27 +117,10 @@ export class SceneComponent implements AfterViewInit {
   }
 
   stepBack() {
-    const animations = COMPLICATED_ANIMATIONS[0];
-    let newAnimations = { ...animations };
-    newAnimations.params = newAnimations.params.map((param) => {
-      const newParam = { ...param, coordinates: [...param.coordinates].reverse() };
-      return newParam;
-    });
-    return newAnimations.params.reverse()
     if (this.currentAnimation > 0) {
       this.babylonService.stepBack(this.currentAnimation - 1);
       this.currentAnimation--;
     }
-  }
-
-  reverseAnimation() {
-    const animations = COMPLICATED_ANIMATIONS[0];
-    let newAnimation = { ...animations };
-    newAnimation.params = newAnimation.params.map((param) => {
-      const newParam = { ...param, coordinates: [...param.coordinates].reverse() };
-      return newParam;
-    });
-    return newAnimation.params.reverse()
   }
 
   /**

@@ -12,7 +12,8 @@ export class BabylonService {
   private engine!: BABYLON.Engine;
   private scene!: BABYLON.Scene;
   private meshes: BABYLON.Nullable<BABYLON.AbstractMesh>[] = [];
-  private currentAnimations?: BABYLON.Animation[];
+  private currentAnimations: BABYLON.Animation[] = [];
+  private reversedCurrentAnimation: BABYLON.Animation[] = [];
 
   createScene(canvas: HTMLCanvasElement): void {
     this.engine = new BABYLON.Engine(canvas, true);
@@ -100,7 +101,7 @@ export class BabylonService {
     );
   };
 
-  clearCurrentAnimation () {
+  clearCurrentAnimation() {
     this.meshes = [];
     this.currentAnimations = [];
   }
@@ -119,14 +120,58 @@ export class BabylonService {
     }
   }
 
-  createComplicatedAnimationArray(complicatedAnimationParams: ComplicatedAnimation) {
+  createComplicatedAnimationArray(
+    complicatedAnimationParams: ComplicatedAnimation,
+    reversed: boolean
+  ) {
     if (Array.isArray(complicatedAnimationParams.componentName)) {
       complicatedAnimationParams.componentName.forEach((componentName) => {
         const newComplicatedAnimationParams = complicatedAnimationParams;
         newComplicatedAnimationParams.componentName = componentName;
-        this.createComplicatedAnimation(newComplicatedAnimationParams);
+        this.createComplicatedAnimation(
+          newComplicatedAnimationParams,
+          reversed
+        );
       });
     }
+  }
+
+  reverseAnimation(animation: ComplicatedAnimation) {
+    let newAnimation = { ...animation };
+    newAnimation.params = newAnimation.params.map((param) => {
+      const newParam = {
+        ...param,
+        coordinates: [...param.coordinates].reverse(),
+      };
+      return newParam;
+    });
+    return newAnimation;
+  }
+
+  createBabylonAnimation(complicatedAnimationParams: ComplicatedAnimation) {
+    const complicatedAnimations: BABYLON.Animation[] = [];
+    complicatedAnimationParams.params.forEach((params) => {
+      const newAnimation = new BABYLON.Animation(
+        'Complicated' +
+          complicatedAnimationParams.componentName +
+          params.position +
+          params.coordinates,
+        params.position,
+        FRAME_RATE,
+        BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+        BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+      );
+      const keyFrames: BABYLON.IAnimationKey[] = [];
+      params.coordinates.forEach((coordinate, index) => {
+        keyFrames.push({
+          frame: index * FRAME_RATE,
+          value: coordinate,
+        });
+      });
+      newAnimation.setKeys(keyFrames);
+      complicatedAnimations.push(newAnimation);
+    });
+    return complicatedAnimations;
   }
   /**
    * Массив componentName = каждому по анимации
@@ -134,53 +179,39 @@ export class BabylonService {
    * position = alpha, beta, position.y, position.x, position.z
    * @param complicatedAnimationParams
    */
-  createComplicatedAnimation(complicatedParams: ComplicatedAnimation) {
+  createComplicatedAnimation(
+    complicatedParams: ComplicatedAnimation,
+    reversed: boolean
+  ) {
     const complicatedAnimationParams = { ...complicatedParams };
     if (!Array.isArray(complicatedAnimationParams.componentName)) {
       if (this.scene.getMeshByName(complicatedAnimationParams.componentName)) {
         const mesh = this.scene.getMeshByName(
           complicatedAnimationParams.componentName
         );
-        const complicatedAnimations: BABYLON.Animation[] = [];
-
-        // let index = 0;
-
-        complicatedAnimationParams.params.forEach((params) => {
-          const newAnimation = new BABYLON.Animation(
-            'Complicated' +
-              complicatedAnimationParams.componentName +
-              params.position +
-              params.coordinates,
-            params.position,
-            FRAME_RATE,
-            BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-            BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
-          );
-          const keyFrames: BABYLON.IAnimationKey[] = [];
-          params.coordinates.forEach((coordinate, index) => {
-            keyFrames.push({
-              frame: index * FRAME_RATE,
-              value: coordinate,
-            });
-          });
-          newAnimation.setKeys(keyFrames);
-          complicatedAnimations.push(newAnimation);
-          // this.startAnimation(mesh, [newAnimation], 0, highestFrame);
-        });
         this.meshes.push(mesh);
-        this.currentAnimations = complicatedAnimations;
+        if (!reversed) {
+          this.currentAnimations = this.createBabylonAnimation(
+            complicatedAnimationParams
+          );
+        } else
+          this.reversedCurrentAnimation = this.createBabylonAnimation(
+            complicatedAnimationParams
+          );
       } else {
         complicatedAnimationParams.componentName = this.getChildNames(
           complicatedAnimationParams.componentName as string
         );
-        this.createComplicatedAnimationArray(complicatedAnimationParams);
+        this.createComplicatedAnimationArray(
+          complicatedAnimationParams,
+          reversed
+        );
       }
     } else {
-      complicatedAnimationParams.componentName.forEach((element) => {
-        const newAnimationParams = complicatedAnimationParams;
-        newAnimationParams.componentName = element;
-        this.createComplicatedAnimation(newAnimationParams);
-      });
+      this.createComplicatedAnimationArray(
+        complicatedAnimationParams,
+        reversed
+      );
     }
   }
 
@@ -239,11 +270,11 @@ export class BabylonService {
   }
 
   stepBack(animationIndex: number) {
-    if (this.meshes && this.currentAnimations) {
+    if (this.meshes && this.reversedCurrentAnimation[animationIndex]) {
       const highestFrame = 100;
-      const animation = this.currentAnimations[animationIndex];
-      // let newKeys = animation.getKeys();
-      // newKeys.reverse();
+      console.log(this.reversedCurrentAnimation[animationIndex]);
+      const animation = this.reversedCurrentAnimation[animationIndex];
+
       console.log('INCOMING ANIMATION IS');
       console.log(animation);
       this.meshes.forEach((mesh) => {
@@ -252,8 +283,8 @@ export class BabylonService {
     }
   }
 
-  getCurrentAnimationsLength(): number | undefined { 
-    return this.currentAnimations?.length
+  getCurrentAnimationsLength(): number | undefined {
+    return this.currentAnimations?.length;
   }
 
   animateCamera() {
