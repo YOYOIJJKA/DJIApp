@@ -25,6 +25,10 @@ const routes: Routes = [
   {
     path: 'scene-repair',
     component: SceneComponent
+  },
+  {
+    path: 'assemble',
+    component: SceneComponent
   }
 ];
 

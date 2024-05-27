@@ -2,6 +2,7 @@ import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { BabylonService } from '../../Services/babylon.service';
 import {
   ANIMATIONS,
+  ASSSEMBLE_ANIMATIONS,
   COMPLICATED_ANIMATIONS,
   COMPLICATED_REPAIR_ANIMATIONS,
   EXPLOSION_ANIMATIONS,
@@ -27,21 +28,25 @@ export class SceneComponent implements AfterViewInit {
   tips: string[] = [];
   tip?: string;
   visible: boolean = false;
-  // animationNames: string[];
   selected: string = '';
+  assemble: AnimationParams[] = ASSSEMBLE_ANIMATIONS;
   currentAnimation: number = 0;
   isSimpleAnimation: boolean = true;
-  spinnerMode: ProgressSpinnerMode = 'indeterminate';
-  isDisabledSelect: boolean = true;
+  isComplicatedAnimation: boolean = false;
+  // spinnerMode: ProgressSpinnerMode = 'indeterminate';
+  // isDisabledSelect: boolean = true;
+  spinnerMode: ProgressSpinnerMode = 'determinate';
+  isDisabledSelect: boolean = false;
 
   constructor(private babylonService: BabylonService, private router: Router) {
     this.animations = this.checkRoot() ? REPAIR_ANIMATIONS : ANIMATIONS;
     this.complicatedAnimations = this.checkRoot()
       ? COMPLICATED_REPAIR_ANIMATIONS
       : COMPLICATED_ANIMATIONS;
-    // this.animationNames = this.checkRoot()
-    //   ? REPAIR_ANIMATION_NAMES
-    //   : ANIMATION_NAMES;
+    if (this.checkAssemble()) {
+      this.isSimpleAnimation = false;
+      this.isComplicatedAnimation = false;
+    }
   }
 
   ngAfterViewInit(): void {
@@ -58,6 +63,10 @@ export class SceneComponent implements AfterViewInit {
    */
   checkRoot(): boolean {
     return this.router.url == '/scene-repair';
+  }
+
+  checkAssemble(): boolean {
+    return this.router.url == '/assemble';
   }
 
   valueChanged() {
@@ -81,6 +90,7 @@ export class SceneComponent implements AfterViewInit {
           this.tips.push(param.tip);
         }
       });
+      this.isComplicatedAnimation = true;
       this.babylonService.createComplicatedAnimation(
         complicateAnimations[animationIndex],
         false
@@ -93,6 +103,7 @@ export class SceneComponent implements AfterViewInit {
       );
     } else {
       this.isSimpleAnimation = true;
+      this.isComplicatedAnimation = false;
     }
   }
 
@@ -104,7 +115,7 @@ export class SceneComponent implements AfterViewInit {
     this.babylonService.clearCurrentAnimation();
     let animationIndex: number | undefined;
     const animations = { ...this.animations };
-    this.animations.forEach((element, index) => {
+    animations.forEach((element, index) => {
       if (element.name == this.selected) {
         animationIndex = index;
       }
@@ -180,5 +191,32 @@ export class SceneComponent implements AfterViewInit {
   toggleText() {
     if (this.visible) this.visible = false;
     else this.visible = true;
+  }
+
+  nextAnimation() {
+    if (this.currentAnimation < this.assemble.length) {
+      console.log(this.assemble[this.currentAnimation]);
+      this.tip = this.assemble[this.currentAnimation].tip;
+      if (this.tip) {
+        this.visible = true;
+      }
+      this.babylonService.animate(this.assemble[this.currentAnimation]);
+      this.currentAnimation++;
+    }
+  }
+  previousAnimation() {
+    if (this.currentAnimation > 0) {
+      this.currentAnimation--;
+      const reversedAnimation: AnimationParams = {
+        ...this.assemble[this.currentAnimation],
+        from: this.assemble[this.currentAnimation].to,
+        to: this.assemble[this.currentAnimation].from,
+      };
+      this.tip = reversedAnimation.tip;
+      if (this.tip) {
+        this.visible = true;
+      }
+      this.babylonService.animate(reversedAnimation);
+    }
   }
 }

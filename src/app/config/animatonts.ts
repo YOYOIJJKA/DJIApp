@@ -46,6 +46,25 @@ export const SHIFT = 20;
 
 export const FRAME_RATE = 20;
 
+export const ASSSEMBLE_ANIMATIONS: AnimationParams[] = [
+  {
+    from: 0,
+    to: -SHIFT * 2,
+    componentName: 'BottomCover',
+    position: 'position.y',
+    tip: 'Открутите винты нижней крышки, всего 6 штук',
+    name: 'Снятие',
+  },
+  {
+    from: 0,
+    to: -SHIFT,
+    componentName: 'ScrewBottomGroup',
+    position: 'position.y',
+    tip: 'Снимите нижнюю крышку, потянув ее вниз',
+    name: 'Снятие нижней крышки',
+  },
+];
+
 export const REPAIR_ANIMATIONS: AnimationParams[] = [
   {
     from: 0,
@@ -65,9 +84,21 @@ export const COMPLICATED_ANIMATIONS: ComplicatedAnimation[] = [
       'RightFrontBlades',
     ],
     params: [
-      { coordinates: [0, -SHIFT / 10], position: 'position.y', tip: 'Надавите на лопасть, чтобы она опустилась вниз.' },
-      { coordinates: [0, Math.PI / 12], position: 'rotation.y', tip: 'Поверните лопасть против часовой стрелки.' },
-      { coordinates: [-SHIFT / 10, SHIFT], position: 'position.y', tip: 'Снимите лопасть подняв ее вверх.' },
+      {
+        coordinates: [0, -SHIFT / 10],
+        position: 'position.y',
+        tip: 'Надавите на лопасть, чтобы она опустилась вниз.',
+      },
+      {
+        coordinates: [0, Math.PI / 12],
+        position: 'rotation.y',
+        tip: 'Поверните лопасть против часовой стрелки.',
+      },
+      {
+        coordinates: [-SHIFT / 10, SHIFT],
+        position: 'position.y',
+        tip: 'Снимите лопасть подняв ее вверх.',
+      },
     ],
     name: 'Снятие лопастей',
   },
@@ -79,16 +110,27 @@ export const COMPLICATED_ANIMATIONS: ComplicatedAnimation[] = [
       'RightFrontBlades',
     ],
     params: [
-      { coordinates: [SHIFT, -SHIFT / 10], position: 'position.y', tip: 'Наденьте лопасть на цилиндр, опустив ее вниз до упора.' },
-      { coordinates: [Math.PI / 12, 0], position: 'rotation.y', tip: 'Поверните лопасть по часовой стрелке' },
-      { coordinates: [-SHIFT / 10, 0], position: 'position.y', tip: 'Отпустите лопасть, после чего она поднимется вверх и будет установлена корректно.' },
+      {
+        coordinates: [SHIFT, -SHIFT / 10],
+        position: 'position.y',
+        tip: 'Наденьте лопасть на цилиндр, опустив ее вниз до упора.',
+      },
+      {
+        coordinates: [Math.PI / 12, 0],
+        position: 'rotation.y',
+        tip: 'Поверните лопасть по часовой стрелке',
+      },
+      {
+        coordinates: [-SHIFT / 10, 0],
+        position: 'position.y',
+        tip: 'Отпустите лопасть, после чего она поднимется вверх и будет установлена корректно.',
+      },
     ],
     name: 'Установка лопастей',
   },
 ];
 
 export const COMPLICATED_REPAIR_ANIMATIONS: ComplicatedAnimation[] = [];
-
 
 export const ANIMATIONS: AnimationParams[] = [
   {
@@ -97,7 +139,7 @@ export const ANIMATIONS: AnimationParams[] = [
     componentName: 'Battery',
     name: 'Снятие батареи',
     position: 'position.y',
-    tip: 'Для снятия батареи нажмите на кнопки с обеих сторон, после чего поднимите ее вверх.'
+    tip: 'Для снятия батареи нажмите на кнопки с обеих сторон, после чего поднимите ее вверх.',
   },
   //Защита Камеры
   {
@@ -106,7 +148,7 @@ export const ANIMATIONS: AnimationParams[] = [
     name: 'Снятие защиты камеры',
     componentName: 'CameraProtection',
     position: 'position.z',
-    tip: 'Для снятия защиты камеры необходимо заднюю часть защиты потянуть в направлении от квадрокоптера, после чего защита будет снята.'
+    tip: 'Для снятия защиты камеры необходимо заднюю часть защиты потянуть в направлении от квадрокоптера, после чего защита будет снята.',
   },
   {
     to: 0,
@@ -114,7 +156,7 @@ export const ANIMATIONS: AnimationParams[] = [
     componentName: 'Battery',
     name: 'Установка батареи',
     position: 'position.y',
-    tip: 'Для установки батареи нажмите на кнопки с обеих сторон, после чего опустите ее вниз.'
+    tip: 'Для установки батареи нажмите на кнопки с обеих сторон, после чего опустите ее вниз.',
   },
   //Защита Камеры
   {
@@ -123,7 +165,7 @@ export const ANIMATIONS: AnimationParams[] = [
     name: 'Установка защиты камеры',
     componentName: 'CameraProtection',
     position: 'position.z',
-    tip: 'Для установки защиты камеры необходимо под наклоном вставить сначала переднюю часть в имеющееся отверстие, затем заднюю.'
+    tip: 'Для установки защиты камеры необходимо под наклоном вставить сначала переднюю часть в имеющееся отверстие, затем заднюю.',
   },
   //Лопасти
   // {

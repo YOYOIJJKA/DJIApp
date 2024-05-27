@@ -1,6 +1,6 @@
 <header></header>
 <body>
-  <mat-form-field>
+  <mat-form-field *ngIf="!checkAssemble()">
     <mat-label>Сценарий анимации</mat-label>
     <mat-select
       [(value)]="selected"
@@ -32,7 +32,7 @@
     >
       Запустить анимацию
     </button>
-    <ng-container *ngIf="!isSimpleAnimation">
+    <ng-container *ngIf="isComplicatedAnimation">
       <button mat-raised-button color="primary" (click)="stepBack()"><<</button>
       <button
         mat-flat-button
@@ -45,6 +45,22 @@
         >>
       </button>
     </ng-container>
+
+    <ng-container *ngIf="checkAssemble()">
+      <h1>Разборка:</h1>
+      <button mat-raised-button color="primary" (click)="previousAnimation()"><<</button>
+      <button
+        mat-flat-button
+        color="secondary"
+        (click)="clearCurrentAnimation()"
+      >
+        Текущий шаг: {{ currentAnimation }}
+      </button>
+      <button mat-raised-button color="primary" (click)="nextAnimation()">
+        >>
+      </button>
+    </ng-container>
+
     <button mat-raised-button color="primary" (click)="animateCamera()">
       Облет модели
     </button>

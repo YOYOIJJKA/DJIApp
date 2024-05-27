@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { OnInit} from '@angular/core'
+import { OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -31,10 +31,14 @@ export class AppComponent implements OnInit {
   goToTests(): void {
     this.router.navigateByUrl('tests');
   }
-    /**
+  /**
    * Метод отправляет пользователя на главную страницу
    */
   goHome(): void {
     this.router.navigateByUrl('main-page');
+  }
+
+  goToAssemble(): void {
+    this.router.navigateByUrl('assemble');
   }
 }

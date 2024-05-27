@@ -92,8 +92,8 @@ export class BabylonService {
   startAnimation = (
     mesh: any,
     animations: any,
-    beginFrame: number,
-    endFrame: number
+    beginFrame: number = 0,
+    endFrame: number = 100
   ) => {
     this.scene.beginDirectAnimation(
       mesh,
@@ -107,6 +107,7 @@ export class BabylonService {
   clearCurrentAnimation() {
     this.meshes = [];
     this.currentAnimations = [];
+    this.reversedCurrentAnimation = [];
   }
 
   /**
@@ -151,7 +152,9 @@ export class BabylonService {
     return newAnimation;
   }
 
-  createBabylonAnimation(complicatedAnimationParams: ComplicatedAnimation) {
+  createBabylonAnimation(
+    complicatedAnimationParams: ComplicatedAnimation
+  ): BABYLON.Animation[] {
     const complicatedAnimations: BABYLON.Animation[] = [];
     complicatedAnimationParams.params.forEach((params) => {
       const newAnimation = new BABYLON.Animation(
@@ -274,11 +277,8 @@ export class BabylonService {
   stepBack(animationIndex: number) {
     if (this.meshes && this.reversedCurrentAnimation[animationIndex]) {
       const highestFrame = 100;
-      console.log(this.reversedCurrentAnimation[animationIndex]);
       const animation = this.reversedCurrentAnimation[animationIndex];
 
-      console.log('INCOMING ANIMATION IS');
-      console.log(animation);
       this.meshes.forEach((mesh) => {
         this.startAnimation(mesh, [animation], 0, highestFrame);
       });
