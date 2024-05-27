@@ -33,10 +33,10 @@ export class SceneComponent implements AfterViewInit {
   currentAnimation: number = 0;
   isSimpleAnimation: boolean = true;
   isComplicatedAnimation: boolean = false;
-  // spinnerMode: ProgressSpinnerMode = 'indeterminate';
-  // isDisabledSelect: boolean = true;
-  spinnerMode: ProgressSpinnerMode = 'determinate';
-  isDisabledSelect: boolean = false;
+  spinnerMode: ProgressSpinnerMode = 'indeterminate';
+  isDisabledSelect: boolean = true;
+  // spinnerMode: ProgressSpinnerMode = 'determinate';
+  // isDisabledSelect: boolean = false;
 
   constructor(private babylonService: BabylonService, private router: Router) {
     this.animations = this.checkRoot() ? REPAIR_ANIMATIONS : ANIMATIONS;

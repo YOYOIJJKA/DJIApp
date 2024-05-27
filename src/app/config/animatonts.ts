@@ -49,16 +49,24 @@ export const FRAME_RATE = 20;
 export const ASSSEMBLE_ANIMATIONS: AnimationParams[] = [
   {
     from: 0,
-    to: -SHIFT * 2,
-    componentName: 'BottomCover',
+    to: SHIFT * 4,
+    componentName: 'Battery',
     position: 'position.y',
-    tip: 'Открутите винты нижней крышки, всего 6 штук',
-    name: 'Снятие',
+    tip: 'Первым шагом необходимо снять батарею, чтобы обесточить квадрокоптер',
+    name: 'Снятие батареи'
+  },
+  {
+    from: 0,
+    to: -SHIFT * 2,
+    componentName: 'ScrewBottomGroup',
+    position: 'position.y',
+    tip: 'Открутите винты нижней крышки, всего 8 штук',
+    name: 'Откручивание винтов нижней крышки',
   },
   {
     from: 0,
     to: -SHIFT,
-    componentName: 'ScrewBottomGroup',
+    componentName: 'BottomCover',
     position: 'position.y',
     tip: 'Снимите нижнюю крышку, потянув ее вниз',
     name: 'Снятие нижней крышки',
