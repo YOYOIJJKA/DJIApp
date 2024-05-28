@@ -1,20 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TESTS } from '../../config/tests';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-tests',
   templateUrl: './tests.component.html',
   styleUrl: './tests.component.scss',
 })
-export class TestsComponent {
+export class TestsComponent implements OnInit {
   tests = TESTS;
   answers: string[] = [];
+  prevCorrectAnswersNumber?: number | null = 10;
 
-  constructor(public snackBar: MatSnackBar) {
+  constructor(private snackBar: MatSnackBar, private auth: AuthService) {
     for (let i = 0; i < this.tests.length; i++) {
       this.tests[i].index = i;
     }
+  }
+
+  ngOnInit(): void {
+    this.auth.getUserProgress(this.auth.getId()).subscribe({
+      next: (value) => {
+        this.prevCorrectAnswersNumber = value.correctAnswers;
+      },
+    });
   }
   /**
    * Преобразует строку - приводит все символы к нижнему регистру и заменяет Ё на Е
@@ -47,9 +57,17 @@ export class TestsComponent {
           this.transformString(this.answers[i])
         )
           counter++;
-        this.openSnackBar('Количество правильных ответов: ' + counter);
       }
-    } else this.openSnackBar('Пожалуйста, ответьте хотя бы на один вопрос');
+      this.auth
+        .patchUserProgress(
+          {
+            correctAnswers: counter,
+          },
+          this.auth.getId()
+        )
+        .subscribe();
+      this.openSnackBar('Количество правильных ответов: ' + counter);
+    } else this.openSnackBar('Пожалуйста, ответьте на все вопросы');
   }
 
   /**

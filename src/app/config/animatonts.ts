@@ -57,7 +57,7 @@ export const ASSSEMBLE_ANIMATIONS: AnimationParams[] = [
   },
   {
     from: 0,
-    to: -SHIFT * 2,
+    to: -SHIFT * 4,
     componentName: 'ScrewBottomGroup',
     position: 'position.y',
     tip: 'Открутите винты нижней крышки, всего 8 штук',
@@ -65,7 +65,7 @@ export const ASSSEMBLE_ANIMATIONS: AnimationParams[] = [
   },
   {
     from: 0,
-    to: -SHIFT,
+    to: -SHIFT * 3,
     componentName: 'BottomCover',
     position: 'position.y',
     tip: 'Снимите нижнюю крышку, потянув ее вниз',

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { OnInit } from '@angular/core';
+import { AuthService } from './Services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -8,11 +9,25 @@ import { OnInit } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(public router: Router) {}
+  constructor(public router: Router, private http: AuthService) {}
 
   ngOnInit(): void {
-    console.log(this.router.url);
+    if (this.http.checkAuth()) {
+      this.http.getUserProgress(this.http.getId()).subscribe({
+        next: (progress) => {
+          if (progress.currentPage) {
+            this.router.navigateByUrl(progress.currentPage);
+          }
+        },
+      });
+    }
   }
+
+  logOut() {
+    this.http.clearStorage();
+    this.router.navigateByUrl('');
+  }
+
   /**
    * Метод отправляет пользователя на страницу "сценарии обслуживания"
    */

@@ -1,5 +1,9 @@
 <body>
   <h1>Тестирование на предмет освоения инструкции</h1>
+  <p *ngIf="prevCorrectAnswersNumber">
+    Количество правильных ответов в предыдущей попытке: 
+    {{ prevCorrectAnswersNumber }}
+  </p>
   <div class="tests">
     <h2>Вопросы без картинок</h2>
     <div *ngFor="let test of tests">
@@ -40,7 +44,7 @@
     <h2>Открытые вопросы</h2>
     <div *ngFor="let test of tests">
       <div class="test" *ngIf="!test.answers">
-        <label class="text-label">{{test.question}}</label>
+        <label class="text-label">{{ test.question }}</label>
         <mat-form-field class="text">
           <textarea
             [(ngModel)]="answers[test.index!]"

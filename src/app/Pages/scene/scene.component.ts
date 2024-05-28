@@ -1,4 +1,10 @@
-import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  ElementRef,
+  ViewChild,
+  OnDestroy,
+} from '@angular/core';
 import { BabylonService } from '../../Services/babylon.service';
 import {
   ANIMATIONS,
@@ -12,13 +18,14 @@ import { Router } from '@angular/router';
 import { AnimationParams } from '../../Interfaces/animation';
 import { ComplicatedAnimation } from '../../Interfaces/complicated-animation';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-scene',
   templateUrl: './scene.component.html',
   styleUrls: ['./scene.component.scss'],
 })
-export class SceneComponent implements AfterViewInit {
+export class SceneComponent implements AfterViewInit, OnDestroy {
   @ViewChild('canvas') canvasRef!: ElementRef;
 
   isBlowed: boolean = false;
@@ -38,7 +45,11 @@ export class SceneComponent implements AfterViewInit {
   // spinnerMode: ProgressSpinnerMode = 'determinate';
   // isDisabledSelect: boolean = false;
 
-  constructor(private babylonService: BabylonService, private router: Router) {
+  constructor(
+    private babylonService: BabylonService,
+    private router: Router,
+    private authService: AuthService
+  ) {
     this.animations = this.checkRoot() ? REPAIR_ANIMATIONS : ANIMATIONS;
     this.complicatedAnimations = this.checkRoot()
       ? COMPLICATED_REPAIR_ANIMATIONS
@@ -49,12 +60,46 @@ export class SceneComponent implements AfterViewInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.saveCurrentAnimation();
+  }
+
   ngAfterViewInit(): void {
     this.babylonService.createScene(this.canvasRef.nativeElement);
     this.babylonService.loadModel().then(() => {
       this.spinnerMode = 'determinate';
       this.isDisabledSelect = false;
+      this.authService.getUserProgress(this.authService.getId()).subscribe({
+        next: (progress) => {
+          if (progress.currentAnimationName) {
+            this.isDisabledSelect = false;
+            this.selected = progress.currentAnimationName;
+            this.isDisabledSelect = true;
+          }
+        },
+      });
+      this.authService
+        .patchUserProgress(
+          {
+            currentPage: this.router.url,
+          },
+          this.authService.getId()
+        )
+        .subscribe();
     });
+  }
+
+  saveCurrentAnimation() {
+    if (this.selected) {
+      this.authService
+        .patchUserProgress(
+          {
+            currentAnimationName: this.selected,
+          },
+          this.authService.getId()
+        )
+        .subscribe();
+    }
   }
 
   /**

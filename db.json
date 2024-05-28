@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "id": "0",
+      "email": "newUser@email.com",
+      "password": "ded"
+    }
+  ],
+  "userProgress": [
+    {
+      "id": "0",
+      "currentPage": "/tests",
+      "currentAnimation": "Снятие батареи",
+      "correctAnswers": 1,
+      "currentAnimationName": ""
+    }
+  ]
+}
