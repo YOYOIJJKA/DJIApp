@@ -15,11 +15,13 @@ export class BabylonService {
   private currentAnimations: BABYLON.Animation[] = [];
   private reversedCurrentAnimation: BABYLON.Animation[] = [];
   private camera!: BABYLON.ArcRotateCamera;
+  private selectedMesh?: BABYLON.AbstractMesh;
+  private canvas?: HTMLCanvasElement;
 
   createScene(canvas: HTMLCanvasElement): void {
     this.engine = new BABYLON.Engine(canvas, true);
     this.scene = new BABYLON.Scene(this.engine);
-
+    this.canvas = canvas;
     this.camera = new BABYLON.ArcRotateCamera(
       'camera',
       Math.PI / 2,
@@ -28,7 +30,7 @@ export class BabylonService {
       new BABYLON.Vector3(0, 0, 0),
       this.scene
     );
-    this.camera.attachControl(canvas, true);
+    this.camera.attachControl(this.canvas, true);
     this.camera.upperBetaLimit = null;
     this.camera.lowerBetaLimit = null;
 
@@ -78,19 +80,45 @@ export class BabylonService {
       }
     );
   }
-
+  ///////////////////
   addBehaviour(mesh: BABYLON.AbstractMesh) {
     this.camera.detachControl();
     mesh.addBehavior(new BABYLON.PointerDragBehavior());
   }
 
-  removeBehaviour(canvas: HTMLCanvasElement, mesh: BABYLON.AbstractMesh) {
-    this.camera.attachControl(canvas, true);
-    mesh.behaviors.forEach((behavior) => {
-      mesh.removeBehavior(behavior);
+  removeBehaviour() {
+    this.camera.attachControl(this.canvas, true);
+    this.scene.meshes.forEach((mesh) => {
+      mesh.behaviors.forEach((behavior) => {
+        mesh.removeBehavior(behavior);
+      });
     });
   }
 
+  enableSelection() {
+    this.scene.meshes.forEach((mesh) => {
+      mesh.isPickable = true;
+    });
+    this.scene.onPointerDown = (evt, pickResult) => {
+      if (
+        pickResult.hit &&
+        pickResult.pickedMesh &&
+        pickResult.pickedMesh.name != 'BackgroundSkybox'
+      ) {
+        this.addBehaviour(pickResult.pickedMesh);
+      }
+    };
+    this.scene.onPointerUp = () => {
+      this.removeBehaviour();
+    };
+  }
+
+  resetPosition() {
+    this.scene.meshes.forEach((mesh) => {
+      mesh.position = new BABYLON.Vector3(0, 0, 0);
+    });
+  }
+  ///////////////////
   getChildNames(name: string): string[] {
     let names: string[];
     names = [];

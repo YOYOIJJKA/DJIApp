@@ -2,23 +2,8 @@
   color="primary"
   [mode]="spinnerMode"
 ></mat-progress-spinner>
-<button
-  mat-flat-button
-  color="primary"
-  [disabled]="isDisabled"
-  (click)="switchMode()"
-  *ngIf="!moveCamera"
->
-  Передвигать камеру
-</button>
-<button
-  mat-flat-button
-  color="primary"
-  [disabled]="isDisabled"
-  (click)="switchMode()"
-  *ngIf="moveCamera"
->
-  Передвигать детали
+<button mat-flat-button color="primary" (click)="resetPosition()">
+  Сбросить позиции элементов
 </button>
 
 <canvas #canvas></canvas>

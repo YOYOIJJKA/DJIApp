@@ -56,4 +56,8 @@ export class AppComponent implements OnInit {
   goToAssemble(): void {
     this.router.navigateByUrl('assemble');
   }
+
+  goToExploration() {
+    this.router.navigateByUrl('exploration');
+  }
 }
