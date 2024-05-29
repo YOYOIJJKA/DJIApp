@@ -25,12 +25,14 @@ export class ExplorationComponent implements AfterViewInit {
       this.spinnerMode = 'determinate';
     });
     this.babylonService.enableSelection();
-    this.auth.patchUserProgress(
-      {
-        currentPage: this.router.url,
-      },
-      this.auth.getId()
-    ).subscribe();
+    this.auth
+      .patchUserProgress(
+        {
+          currentPage: this.router.url,
+        },
+        this.auth.getId()
+      )
+      .subscribe();
   }
 
   resetPosition() {
