@@ -4,6 +4,7 @@ import { AuthComponent } from './Pages/auth/auth.component';
 import { SceneComponent } from './Pages/scene/scene.component';
 import { MainComponent } from './Pages/main/main.component';
 import { TestsComponent } from './Pages/tests/tests.component';
+import { ExplorationComponent } from './Pages/exploration/exploration.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,10 @@ const routes: Routes = [
   {
     path: 'assemble',
     component: SceneComponent
+  },
+  {
+    path: 'exploration',
+    component: ExplorationComponent
   }
 ];
 

@@ -14,12 +14,13 @@ export class BabylonService {
   private meshes: BABYLON.Nullable<BABYLON.AbstractMesh>[] = [];
   private currentAnimations: BABYLON.Animation[] = [];
   private reversedCurrentAnimation: BABYLON.Animation[] = [];
+  private camera!: BABYLON.ArcRotateCamera;
 
   createScene(canvas: HTMLCanvasElement): void {
     this.engine = new BABYLON.Engine(canvas, true);
     this.scene = new BABYLON.Scene(this.engine);
 
-    const camera = new BABYLON.ArcRotateCamera(
+    this.camera = new BABYLON.ArcRotateCamera(
       'camera',
       Math.PI / 2,
       Math.PI / 2,
@@ -27,9 +28,9 @@ export class BabylonService {
       new BABYLON.Vector3(0, 0, 0),
       this.scene
     );
-    camera.attachControl(canvas, true);
-    camera.upperBetaLimit = null;
-    camera.lowerBetaLimit = null;
+    this.camera.attachControl(canvas, true);
+    this.camera.upperBetaLimit = null;
+    this.camera.lowerBetaLimit = null;
 
     const light = new BABYLON.HemisphericLight(
       'light',
@@ -76,6 +77,18 @@ export class BabylonService {
         return true;
       }
     );
+  }
+
+  addBehaviour(mesh: BABYLON.AbstractMesh) {
+    this.camera.detachControl();
+    mesh.addBehavior(new BABYLON.PointerDragBehavior());
+  }
+
+  removeBehaviour(canvas: HTMLCanvasElement, mesh: BABYLON.AbstractMesh) {
+    this.camera.attachControl(canvas, true);
+    mesh.behaviors.forEach((behavior) => {
+      mesh.removeBehavior(behavior);
+    });
   }
 
   getChildNames(name: string): string[] {
