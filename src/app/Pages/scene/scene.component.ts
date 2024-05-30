@@ -51,6 +51,7 @@ export class SceneComponent implements AfterViewInit, OnDestroy {
     private authService: AuthService
   ) {
     this.animations = this.checkRoot() ? REPAIR_ANIMATIONS : ANIMATIONS;
+    console.log(this.animations);
     this.complicatedAnimations = this.checkRoot()
       ? COMPLICATED_REPAIR_ANIMATIONS
       : COMPLICATED_ANIMATIONS;
@@ -159,7 +160,7 @@ export class SceneComponent implements AfterViewInit, OnDestroy {
   startAnimation() {
     this.babylonService.clearCurrentAnimation();
     let animationIndex: number | undefined;
-    const animations = { ...this.animations };
+    const animations = [...this.animations];
     animations.forEach((element, index) => {
       if (element.name == this.selected) {
         animationIndex = index;
