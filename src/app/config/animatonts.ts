@@ -200,7 +200,6 @@ export const ANIMATIONS: AnimationParams[] = [
     position: 'position.y',
     tip: 'Для снятия батареи нажмите на кнопки с обеих сторон, после чего поднимите ее вверх.',
   },
-  //Защита Камеры
   {
     from: 0,
     to: -SHIFT,
@@ -217,7 +216,6 @@ export const ANIMATIONS: AnimationParams[] = [
     position: 'position.y',
     tip: 'Для установки батареи нажмите на кнопки с обеих сторон, после чего опустите ее вниз.',
   },
-  //Защита Камеры
   {
     to: 0,
     from: -SHIFT,
@@ -226,19 +224,6 @@ export const ANIMATIONS: AnimationParams[] = [
     position: 'position.z',
     tip: 'Для установки защиты камеры необходимо под наклоном вставить сначала переднюю часть в имеющееся отверстие, затем заднюю.',
   },
-  //Лопасти
-  // {
-  //   to: 0,
-  //   from: SHIFT * 2,
-  //   componentName: [
-  //     'RightBackBlades',
-  //     'RightFrontBlades',
-  //     'LeftBackBlades',
-  //     'LeftFrontBlades',
-  //   ],
-  //   position: 'position.y',
-  //   name: 'Установка лопастей',
-  // },
 ];
 
 export const EXPLOSION_ANIMATIONS: AnimationParams[] = [
