@@ -8,7 +8,7 @@ import { UserProgress } from '../Interfaces/user-progress';
   providedIn: 'root',
 })
 export class AuthService {
-  URL = 'http://localhost:3000/';
+  URL = 'https://dji-app-back-yoyoijjka.amvera.io/';
 
   constructor(private httpClient: HttpClient) {}
 
