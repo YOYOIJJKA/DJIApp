@@ -5,6 +5,7 @@ import { SceneComponent } from './Pages/scene/scene.component';
 import { MainComponent } from './Pages/main/main.component';
 import { TestsComponent } from './Pages/tests/tests.component';
 import { ExplorationComponent } from './Pages/exploration/exploration.component';
+import { HelpComponent } from './Pages/help/help.component';
 
 const routes: Routes = [
   {
@@ -25,16 +26,16 @@ const routes: Routes = [
   },
   {
     path: 'scene-repair',
-    component: SceneComponent
+    component: SceneComponent,
   },
   {
     path: 'assemble',
-    component: SceneComponent
+    component: SceneComponent,
   },
   {
     path: 'exploration',
-    component: ExplorationComponent
-  }
+    component: ExplorationComponent,
+  },
 ];
 
 @NgModule({

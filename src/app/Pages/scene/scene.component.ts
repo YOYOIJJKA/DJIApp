@@ -42,8 +42,8 @@ export class SceneComponent implements AfterViewInit, OnDestroy {
   isComplicatedAnimation: boolean = false;
   spinnerMode: ProgressSpinnerMode = 'indeterminate';
   isDisabledSelect: boolean = true;
-  // spinnerMode: ProgressSpinnerMode = 'determinate';
-  // isDisabledSelect: boolean = false;
+  selectedRepair?: string;
+  allRepairAnimations: { name: string; animations: ComplicatedAnimation[] }[];
 
   constructor(
     private babylonService: BabylonService,
@@ -51,9 +51,11 @@ export class SceneComponent implements AfterViewInit, OnDestroy {
     private authService: AuthService
   ) {
     this.animations = this.checkRoot() ? REPAIR_ANIMATIONS : ANIMATIONS;
-    console.log(this.animations);
+    this.allRepairAnimations = COMPLICATED_REPAIR_ANIMATIONS;
+    this.isSimpleAnimation = !this.checkRoot();
+    this.isComplicatedAnimation = this.checkRoot();
     this.complicatedAnimations = this.checkRoot()
-      ? COMPLICATED_REPAIR_ANIMATIONS
+      ? COMPLICATED_REPAIR_ANIMATIONS[0].animations
       : COMPLICATED_ANIMATIONS;
     if (this.checkAssemble()) {
       this.isSimpleAnimation = false;
@@ -75,7 +77,6 @@ export class SceneComponent implements AfterViewInit, OnDestroy {
           if (progress.currentAnimationName) {
             this.isDisabledSelect = false;
             this.selected = progress.currentAnimationName;
-            this.isDisabledSelect = true;
           }
         },
       });
@@ -90,12 +91,68 @@ export class SceneComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  repairValueChanged() {
+    this.currentAnimation = 0;
+    if (this.selectedRepair) {
+      this.complicatedAnimations = this.allRepairAnimations.find((value) =>
+        value.name.includes(this.selectedRepair!)
+      )!.animations;
+    }
+    this.createRepairAnimations();
+  }
+
+  createRepairAnimations() {
+    this.babylonService.clearCurrentAnimation();
+    this.babylonService.createComplicatedAnimation(
+      this.complicatedAnimations[this.currentAnimation],
+      false
+    );
+    this.babylonService.createComplicatedAnimation(
+      this.babylonService.reverseAnimation(
+        this.complicatedAnimations[this.currentAnimation]
+      ),
+      true
+    );
+  }
+
+  stepForwardRepair() {
+    if (this.currentAnimation < this.complicatedAnimations.length) {
+      this.babylonService.stepForward(0);
+      this.tip =
+        this.complicatedAnimations[this.currentAnimation].params[0].tip;
+      this.currentAnimation++;
+      if (this.currentAnimation < this.complicatedAnimations.length) {
+        this.createRepairAnimations();
+      }
+    }
+  }
+
+  stepBackRepair() {
+    if (this.currentAnimation > 0) {
+      this.currentAnimation--;
+      this.tip =
+        this.complicatedAnimations[this.currentAnimation].params[0].tip;
+      this.createRepairAnimations();
+      this.babylonService.stepBack(0);
+    }
+  }
+
   saveCurrentAnimation() {
     if (this.selected) {
       this.authService
         .patchUserProgress(
           {
             currentAnimationName: this.selected,
+          },
+          this.authService.getId()
+        )
+        .subscribe();
+    }
+    if (this.selectedRepair) {
+      this.authService
+        .patchUserProgress(
+          {
+            currentAnimationName: this.selectedRepair,
           },
           this.authService.getId()
         )

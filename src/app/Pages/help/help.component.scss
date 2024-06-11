@@ -1,0 +1,29 @@
+.spinner-img {
+  margin: 0.25rem;
+  height: 4rem;
+  width: 100%;
+  object-fit: contain;
+}
+.btn-img {
+  margin: 0.25rem;
+  height: 2rem;
+  width: 100%;
+  object-fit: contain;
+}
+h1 {
+  margin-bottom: 0;
+}
+.text {
+  margin: 2%;
+  padding: 1%;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+}
+.help-img {
+  position: absolute;
+  right: 2.5vw;
+}
+.help-block {
+  position: absolute;
+  width: 35vw;
+}

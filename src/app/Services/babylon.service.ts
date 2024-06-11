@@ -4,6 +4,7 @@ import * as BABYLON from '@babylonjs/core';
 import '@babylonjs/loaders';
 import { AnimationParams } from '../Interfaces/animation';
 import { ComplicatedAnimation } from '../Interfaces/complicated-animation';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,8 +16,13 @@ export class BabylonService {
   private currentAnimations: BABYLON.Animation[] = [];
   private reversedCurrentAnimation: BABYLON.Animation[] = [];
   private camera!: BABYLON.ArcRotateCamera;
-  private selectedMesh?: BABYLON.AbstractMesh;
   private canvas?: HTMLCanvasElement;
+  private originalMaterials: Map<string, BABYLON.Material> = new Map();
+  private highlightedMeshes?: string[];
+  private tipSubject = new BehaviorSubject<string>('');
+  tip$ = this.tipSubject.asObservable();
+  private lightBlueGlowMaterial?: BABYLON.StandardMaterial;
+  private cameraRotation?: { alpha: number; beta: number };
 
   createScene(canvas: HTMLCanvasElement): void {
     this.engine = new BABYLON.Engine(canvas, true);
@@ -33,6 +39,17 @@ export class BabylonService {
     this.camera.attachControl(this.canvas, true);
     this.camera.upperBetaLimit = null;
     this.camera.lowerBetaLimit = null;
+    new BABYLON.StandardMaterial('lightBlueGlowMaterial', this.scene);
+    this.lightBlueGlowMaterial = new BABYLON.StandardMaterial(
+      'lightBlueGlowMaterial',
+      this.scene
+    );
+    this.lightBlueGlowMaterial.diffuseColor = new BABYLON.Color3(0.5, 0.7, 1.0);
+    this.lightBlueGlowMaterial.emissiveColor = new BABYLON.Color3(
+      0.3,
+      0.5,
+      0.9
+    );
 
     const light = new BABYLON.HemisphericLight(
       'light',
@@ -72,7 +89,8 @@ export class BabylonService {
   loadModel(): Promise<BABYLON.ISceneLoaderAsyncResult> {
     return BABYLON.SceneLoader.ImportMeshAsync(
       '',
-      'https://dl.dropbox.com/scl/fi/9w4y83j5dpffc9rflq8a7/DJI.glb?rlkey=ofykk9bn8gd86uv4lhkxvwu5j&raw=1',
+      // 'https://dl.dropbox.com/scl/fi/9w4y83j5dpffc9rflq8a7/DJI.glb?rlkey=ofykk9bn8gd86uv4lhkxvwu5j&raw=1',
+      'https://dl.dropbox.com/scl/fi/9w4y83j5dpffc9rflq8a7/DJI.glb?rlkey=ofykk9bn8gd86uv4lhkxvwu5j&st=f4or8h2c&raw=1',
       'DJI.glb',
       this.scene,
       () => {
@@ -80,7 +98,55 @@ export class BabylonService {
       }
     );
   }
-  ///////////////////
+
+  rotateCameraSlowly(targetAlpha: number, targetBeta: number): void {
+    const alphaAnimation = new BABYLON.Animation(
+      'alphaAnimation',
+      'alpha',
+      20,
+      BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+    );
+
+    const alphaKeys = [];
+    alphaKeys.push({
+      frame: 0,
+      value: this.camera.alpha,
+    });
+    alphaKeys.push({
+      frame: 100,
+      value: targetAlpha,
+    });
+
+    alphaAnimation.setKeys(alphaKeys);
+
+    const betaAnimation = new BABYLON.Animation(
+      'betaAnimation',
+      'beta',
+      60,
+      BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+    );
+
+    const betaKeys = [];
+    betaKeys.push({
+      frame: 0,
+      value: this.camera.beta,
+    });
+    betaKeys.push({
+      frame: 50,
+      value: targetBeta,
+    });
+
+    betaAnimation.setKeys(betaKeys);
+
+    this.camera.animations = [];
+    this.camera.animations.push(alphaAnimation);
+    this.camera.animations.push(betaAnimation);
+
+    this.scene.beginAnimation(this.camera, 0, 100, false, 1.0);
+  }
+
   addBehaviour(mesh: BABYLON.AbstractMesh) {
     this.camera.detachControl();
     mesh.addBehavior(new BABYLON.PointerDragBehavior());
@@ -100,11 +166,13 @@ export class BabylonService {
       mesh.isPickable = true;
     });
     this.scene.onPointerDown = (evt, pickResult) => {
+      this.scene.stopAllAnimations();
       if (
         pickResult.hit &&
         pickResult.pickedMesh &&
         pickResult.pickedMesh.name != 'BackgroundSkybox'
       ) {
+        this.setTip(pickResult.pickedMesh.name);
         this.addBehaviour(pickResult.pickedMesh);
       }
     };
@@ -113,12 +181,16 @@ export class BabylonService {
     };
   }
 
+  setTip(newTip: string) {
+    this.tipSubject.next(newTip);
+  }
+
   resetPosition() {
     this.scene.meshes.forEach((mesh) => {
       mesh.position = new BABYLON.Vector3(0, 0, 0);
     });
   }
-  ///////////////////
+
   getChildNames(name: string): string[] {
     let names: string[];
     names = [];
@@ -130,18 +202,55 @@ export class BabylonService {
     return names;
   }
 
+  setNewMaterial(meshName: string, newMaterial: BABYLON.Material): void {
+    const mesh = this.scene.getMeshByName(meshName) as BABYLON.Mesh;
+    if (mesh) {
+      if (!this.originalMaterials.has(meshName) && mesh.material) {
+        this.originalMaterials.set(meshName, mesh.material);
+      }
+      mesh.material = newMaterial;
+    } else {
+      console.warn(`Mesh с именем ${meshName} не найдена внутри сцены`);
+    }
+  }
+
   startAnimation = (
     mesh: any,
     animations: any,
     beginFrame: number = 0,
     endFrame: number = 100
   ) => {
-    this.scene.beginDirectAnimation(
-      mesh,
-      animations,
-      beginFrame,
-      endFrame,
-      false
+    if (this.cameraRotation) {
+      this.rotateCameraSlowly(
+        this.cameraRotation.alpha,
+        this.cameraRotation.beta
+      );
+    }
+
+    this.originalMaterials.forEach((material, meshName) => {
+      const mesh = this.scene.getMeshByName(meshName);
+      if (mesh) {
+        mesh.material = material;
+      }
+    });
+    this.originalMaterials.clear();
+
+    if (this.highlightedMeshes)
+      this.highlightedMeshes.forEach((mesh) => {
+        this.setNewMaterial(mesh, this.lightBlueGlowMaterial!);
+      });
+
+    setTimeout(
+      () => {
+        this.scene.beginDirectAnimation(
+          mesh,
+          animations,
+          beginFrame,
+          endFrame,
+          false
+        );
+      },
+      this.cameraRotation ? 2500 : 0
     );
   };
 
@@ -196,6 +305,14 @@ export class BabylonService {
   createBabylonAnimation(
     complicatedAnimationParams: ComplicatedAnimation
   ): BABYLON.Animation[] {
+    this.highlightedMeshes = complicatedAnimationParams.highlighted
+      ? complicatedAnimationParams.highlighted
+      : undefined;
+
+    this.cameraRotation = complicatedAnimationParams.rotationCamera
+      ? complicatedAnimationParams.rotationCamera
+      : undefined;
+
     const complicatedAnimations: BABYLON.Animation[] = [];
     complicatedAnimationParams.params.forEach((params) => {
       const newAnimation = new BABYLON.Animation(
@@ -267,6 +384,13 @@ export class BabylonService {
    * @param animationParams параметры анимации
    */
   animate(simpleParams: AnimationParams) {
+    this.highlightedMeshes = simpleParams.highlighted
+      ? simpleParams.highlighted
+      : undefined;
+
+    this.cameraRotation = simpleParams.rotationCamera
+      ? simpleParams.rotationCamera
+      : undefined;
     const animationParams = { ...simpleParams };
     if (!Array.isArray(animationParams.componentName)) {
       if (this.scene.getMeshByName(animationParams.componentName)) {
@@ -347,7 +471,7 @@ export class BabylonService {
       camera.animations = [];
       camera.animations.push(animation);
     }
-    this.scene.beginAnimation(camera, 0, 1000, false, 2);
+    this.scene.beginAnimation(camera, 0, 2000, false, 2);
   }
 
   stopAnimations() {

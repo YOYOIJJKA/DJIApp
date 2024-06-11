@@ -5,4 +5,6 @@ export interface AnimationParams {
   position: string;
   name?: string;
   tip?: string;
+  highlighted?: string[];
+  rotationCamera?: { alpha: number; beta: number };
 }

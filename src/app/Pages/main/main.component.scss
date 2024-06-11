@@ -6,8 +6,8 @@
   display: flex;
 }
 .mavic {
-  width: 50vw;
-  height: 25vw;
+  width: 60vw;
+  height: 30vw;
 }
 .text {
   margin: 2%;
@@ -45,16 +45,4 @@ mat-expansion-panel-header {
 }
 mat-expansion-panel {
   background-color: Gainsboro;
-}
-.spinner-img {
-  margin: 0.25rem;
-  height: 4rem;
-  width: 100%;
-  object-fit: contain;
-}
-.btn-img {
-  margin: 0.25rem;
-  height: 2rem;
-  width: 100%;
-  object-fit: contain;
 }

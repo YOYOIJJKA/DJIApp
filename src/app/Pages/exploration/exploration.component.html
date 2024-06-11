@@ -5,5 +5,16 @@
 <button mat-flat-button color="primary" (click)="resetPosition()">
   Сбросить позиции элементов
 </button>
-
+<mat-form-field class="label" *ngIf="label">
+  <textarea
+    name="label"
+    matInput
+    cdkTextareaAutosize
+    readonly
+    #autosize="cdkTextareaAutosize"
+    cdkAutosizeMinRows="1"
+    cdkAutosizeMaxRows="8"
+    >{{ label }}</textarea
+  >
+</mat-form-field>
 <canvas #canvas></canvas>

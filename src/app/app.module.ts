@@ -19,6 +19,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HttpClientModule } from '@angular/common/http';
 import { ExplorationComponent } from './Pages/exploration/exploration.component';
+import { HelpComponent } from './Pages/help/help.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import { ExplorationComponent } from './Pages/exploration/exploration.component'
     SceneComponent,
     TestsComponent,
     ExplorationComponent,
+    HelpComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +46,7 @@ import { ExplorationComponent } from './Pages/exploration/exploration.component'
     MatSnackBarModule,
     MatProgressSpinnerModule,
     HttpClientModule,
+    MatSidenavModule,
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],

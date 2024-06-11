@@ -2,15 +2,22 @@ import { AnimationParams } from '../Interfaces/animation';
 import { ComplicatedAnimation } from '../Interfaces/complicated-animation';
 
 export const NAMELIST = [
+  'BackBeamHolders',
   'Battery',
   'BottomBoard',
+  'BottomBoardBackWires',
+  'BottomBoardFrontWires',
   'BottomCover',
   'CameraModule',
   'CameraProtection',
   'Cooler',
   'DustFilter',
   'Frame',
+  'FrontBeamsHolders',
+  'FrontBoardBeamsWires',
   'GPSBoard',
+  'GPSBoardWires',
+  'GPSCover',
   'LampBack',
   'LeftBackBeam',
   'LeftBackBlades',
@@ -20,11 +27,12 @@ export const NAMELIST = [
   'LeftFrontBeam',
   'LeftFrontBlades',
   'LeftFrontEngine',
-  'LeftFrontLamp',
   'LeftFrontScrews',
   'LeftFrontSupport',
   'MainBoard',
+  'MainFrame',
   'Plugs',
+  'RearBoardBeamsWires',
   'RightBackBeam',
   'RightBackBlades',
   'RightBackEngine',
@@ -33,13 +41,72 @@ export const NAMELIST = [
   'RightFrontBeam',
   'RightFrontBlades',
   'RightFrontEngine',
-  'RightFrontLamp',
   'RightFrontScrews',
   'RightFrontSupport',
+  'ScrewBackBeamsGroup',
+  'ScrewBackHolderGroup',
   'ScrewBottomGroup',
+  'ScrewFrontBeamsGroup',
+  'ScrewGPSGroup',
+  'ScrewPlugFrameGroup',
   'ScrewPlugGroup',
   'ScrewTopGroup',
   'Sensors',
+  'TopCover',
+];
+
+export const TRANSLATED_NAMELIST = [
+  'Держатели задних лучей',
+  'Батарея',
+  'Нижняя плата',
+  'Провода задней части нижней платы',
+  'Провода передней части нижней платы',
+  'Нижняя крышка',
+  'Модуль камеры',
+  'Защита камеры',
+  'Кулер',
+  'Фильтр от пыли',
+  'Корпус',
+  'Держатели передних лучей',
+  'Провода передних двигателей и ламп',
+  'GPS плата',
+  'Провода GPS платы',
+  'Крышка GPS',
+  'Задняя лампа',
+  'Левый задний луч',
+  'Левые задние лопасти',
+  'Левый задний двигатель',
+  'Левые задние винты',
+  'Левая задняя опора',
+  'Левый передний луч',
+  'Левые передние лопасти',
+  'Левый передний двигатель',
+  'Левые передние винты',
+  'Левая передняя опора',
+  'Основная плата',
+  'Корпус',
+  'Заглушки',
+  'Провода задних двигателей и ламп',
+  'Правый задний луч',
+  'Правые задние лопасти',
+  'Правый задний двигатель',
+  'Правые задние винты',
+  'Правая задняя опора',
+  'Правый передний луч',
+  'Правые передние лопасти',
+  'Правый передний двигатель',
+  'Правые передние винты',
+  'Правая передняя опора',
+  'Группа винтов задних лучей',
+  'Группа винтов задних держателей',
+  'Группа винтов нижней крышки',
+  'Группа винтов передних лучей',
+  'Группа винтов GPS',
+  'Группа винтов верхней крышки под заглушками',
+  'Группа винтов заглушек',
+  'Группа винтов верхней крышки',
+  'Датчики',
+  'Верхняя крышка',
 ];
 
 export const SHIFT = 20;
@@ -54,6 +121,7 @@ export const ASSSEMBLE_ANIMATIONS: AnimationParams[] = [
     position: 'position.y',
     tip: 'Первым шагом необходимо снять батарею, чтобы обесточить квадрокоптер',
     name: 'Снятие батареи',
+    rotationCamera: { alpha: Math.PI / 4, beta: Math.PI / 4 },
   },
   {
     from: 0,
@@ -62,6 +130,7 @@ export const ASSSEMBLE_ANIMATIONS: AnimationParams[] = [
     position: 'position.y',
     tip: 'Открутите винты нижней крышки, всего 8 штук',
     name: 'Откручивание винтов нижней крышки',
+    rotationCamera: { alpha: Math.PI, beta: Math.PI },
   },
   {
     from: 0,
@@ -70,6 +139,7 @@ export const ASSSEMBLE_ANIMATIONS: AnimationParams[] = [
     position: 'position.y',
     tip: 'Снимите нижнюю крышку, потянув ее вниз',
     name: 'Снятие нижней крышки',
+    rotationCamera: { alpha: Math.PI, beta: Math.PI },
   },
   {
     from: 0,
@@ -78,6 +148,7 @@ export const ASSSEMBLE_ANIMATIONS: AnimationParams[] = [
     position: 'position.y',
     tip: 'Открутите винты верхней крышки, всего 6 штук',
     name: 'Откручивание винтов верхней крышки',
+    rotationCamera: { alpha: Math.PI / 4, beta: Math.PI / 4 },
   },
   {
     from: 0,
@@ -86,6 +157,7 @@ export const ASSSEMBLE_ANIMATIONS: AnimationParams[] = [
     position: 'position.y',
     tip: 'Открутите 2 винта заглушек, затем снимите заглушки и открутите еще 2 винта',
     name: 'Снятие заглушек',
+    rotationCamera: { alpha: Math.PI * 1.5, beta: Math.PI },
   },
   {
     from: 0,
@@ -94,6 +166,7 @@ export const ASSSEMBLE_ANIMATIONS: AnimationParams[] = [
     position: 'position.y',
     name: 'Снятие верхней крышки',
     tip: 'Снимите верхнюю крышку, потянув ее вверх',
+    rotationCamera: { alpha: Math.PI / 4, beta: Math.PI / 4 },
   },
   {
     from: 0,
@@ -102,35 +175,17 @@ export const ASSSEMBLE_ANIMATIONS: AnimationParams[] = [
     position: 'position.z',
     name: 'Снятие защиты камеры',
     tip: 'Для снятия защиты камеры необходимо заднюю часть защиты потянуть в направлении от квадрокоптера, после чего защита будет снята.',
+    rotationCamera: { alpha: Math.PI * 1.5, beta: Math.PI },
+  },
+  {
+    from: 0,
+    to: SHIFT * 2,
+    componentName: '',
+    position: '',
   },
 ];
 
-export const REPAIR_ANIMATIONS: AnimationParams[] = [
-  {
-    from: 0,
-    to: SHIFT * 4,
-    componentName: 'Battery',
-    position: 'position.y',
-    tip: 'Первым шагом необходимо снять батарею, чтобы обесточить квадрокоптер',
-    name: 'Снятие батареи',
-  },
-  {
-    from: 0,
-    to: -SHIFT * 4,
-    componentName: 'ScrewBottomGroup',
-    position: 'position.y',
-    tip: 'Открутите винты нижней крышки, всего 8 штук',
-    name: 'Откручивание винтов нижней крышки',
-  },
-  {
-    from: 0,
-    to: -SHIFT * 3,
-    componentName: 'BottomCover',
-    position: 'position.y',
-    tip: 'Снимите нижнюю крышку, потянув ее вниз',
-    name: 'Снятие нижней крышки',
-  },
-];
+export const REPAIR_ANIMATIONS: AnimationParams[] = [];
 
 export const COMPLICATED_ANIMATIONS: ComplicatedAnimation[] = [
   {
@@ -158,6 +213,7 @@ export const COMPLICATED_ANIMATIONS: ComplicatedAnimation[] = [
       },
     ],
     name: 'Снятие лопастей',
+    rotationCamera: { alpha: Math.PI / 4, beta: Math.PI / 4 },
   },
   {
     componentName: [
@@ -187,8 +243,60 @@ export const COMPLICATED_ANIMATIONS: ComplicatedAnimation[] = [
   },
 ];
 
-export const COMPLICATED_REPAIR_ANIMATIONS: ComplicatedAnimation[] = [
-  
+export const COMPLICATED_REPAIR_ANIMATIONS = [
+  {
+    name: 'Замена двигателей',
+    animations: [
+      {
+        params: [
+          {
+            coordinates: [0, SHIFT * 3],
+            position: 'position.y',
+            tip: 'Первым шагом необходимо снять батарею, чтобы обесточить квадрокоптер',
+          },
+        ],
+        componentName: 'Battery',
+      },
+      {
+        params: [
+          {
+            coordinates: [0, -SHIFT * 4],
+            position: 'position.y',
+            tip: 'Открутите винты нижней крышки, всего 8 штук',
+          },
+        ],
+        componentName: 'ScrewBottomGroup',
+        name: 'Замена двигателей',
+      },
+      {
+        params: [
+          {
+            coordinates: [0, -SHIFT * 3],
+
+            position: 'position.y',
+            tip: 'Снимите нижнюю крышку, потянув ее вниз',
+          },
+        ],
+        componentName: 'BottomCover',
+        name: 'Замена двигателей',
+      },
+    ],
+  },
+  {
+    name: 'Замена лучей',
+    animations: [
+      {
+        params: [
+          {
+            coordinates: [0, SHIFT * 3],
+            position: 'position.y',
+            tip: 'Первым шагом необходимо снять батарею, чтобы обесточить квадрокоптер',
+          },
+        ],
+        componentName: 'Battery',
+      },
+    ],
+  },
 ];
 
 export const ANIMATIONS: AnimationParams[] = [
@@ -198,7 +306,9 @@ export const ANIMATIONS: AnimationParams[] = [
     componentName: 'Battery',
     name: 'Снятие батареи',
     position: 'position.y',
+    highlighted: ['Battery_primitive1'],
     tip: 'Для снятия батареи нажмите на кнопки с обеих сторон, после чего поднимите ее вверх.',
+    rotationCamera: { alpha: Math.PI / 4, beta: Math.PI / 4 },
   },
   {
     from: 0,
@@ -207,6 +317,7 @@ export const ANIMATIONS: AnimationParams[] = [
     componentName: 'CameraProtection',
     position: 'position.z',
     tip: 'Для снятия защиты камеры необходимо заднюю часть защиты потянуть в направлении от квадрокоптера, после чего защита будет снята.',
+    rotationCamera: { alpha: 0, beta: Math.PI / 2 },
   },
   {
     to: 0,
@@ -215,6 +326,7 @@ export const ANIMATIONS: AnimationParams[] = [
     name: 'Установка батареи',
     position: 'position.y',
     tip: 'Для установки батареи нажмите на кнопки с обеих сторон, после чего опустите ее вниз.',
+    rotationCamera: { alpha: Math.PI / 4, beta: Math.PI / 4 },
   },
   {
     to: 0,
@@ -223,6 +335,7 @@ export const ANIMATIONS: AnimationParams[] = [
     componentName: 'CameraProtection',
     position: 'position.z',
     tip: 'Для установки защиты камеры необходимо под наклоном вставить сначала переднюю часть в имеющееся отверстие, затем заднюю.',
+    rotationCamera: { alpha: 0, beta: Math.PI / 2 },
   },
 ];
 
@@ -449,23 +562,3 @@ export const EXPLOSION_ANIMATIONS: AnimationParams[] = [
     position: 'position.y',
   },
 ];
-
-// export const ANIMATION_NAMES = [
-//   'Снятие батареи',
-//   'Снятие защиты камеры',
-//   'Снятие лопастей',
-//   'Установка батареи',
-//   'Установка защиты камеры',
-//   'Установка лопастей',
-// ];
-
-// export const REPAIR_ANIMATION_NAMES = ['', ''];
-
-// export const TIPS = [
-//   '1. Для снятия батареи нажмите на кнопки с обеих сторон, после чего поднимите ее вверх',
-//   '1. Для снятия защиты камеры необходимо заднюю часть защиты потянуть в направлении от квадрокоптера, после чего защита будет снята',
-//   '1. Надавите на лопасть, чтобы она опустилась вниз относительно луча. 2. Проверните лопасти против часовой стрелки. 3. Поднимите лопасть вверх, чтобы снять её.',
-//   '1. Для установки батареи нажмите на кнопки с обеих сторон, после чего опустите ее вниз',
-//   '1. Для установки защиты камеры необходимо под наклоном вставить сначала переднюю часть в имеющееся отверстие, затем заднюю.',
-//   '1. Наденьте лопасть на цилиндр. 2. Надавите на лопасть, чтобы она встала в паз. 3. Проверните лопасти по часовой стрелке.',
-// ];

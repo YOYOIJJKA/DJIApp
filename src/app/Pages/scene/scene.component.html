@@ -1,6 +1,6 @@
 <header></header>
 <body>
-  <mat-form-field *ngIf="!checkAssemble()">
+  <mat-form-field *ngIf="!checkAssemble() && !checkRoot()">
     <mat-label>Сценарий анимации</mat-label>
     <mat-select
       [(value)]="selected"
@@ -23,6 +23,22 @@
       >
     </mat-select>
   </mat-form-field>
+
+  <mat-form-field *ngIf="!checkAssemble() && checkRoot()">
+    <mat-label>Сценарий анимации</mat-label>
+    <mat-select
+      [(value)]="selectedRepair"
+      (selectionChange)="repairValueChanged()"
+      [disabled]="isDisabledSelect"
+    >
+      <mat-option
+        *ngFor="let complicatedAnimation of allRepairAnimations"
+        value="{{ complicatedAnimation.name }}"
+        >{{ complicatedAnimation.name }}</mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+
   <div class="buttons">
     <button
       mat-raised-button
@@ -32,7 +48,7 @@
     >
       Запустить анимацию
     </button>
-    <ng-container *ngIf="isComplicatedAnimation">
+    <ng-container *ngIf="isComplicatedAnimation && !this.checkRoot()">
       <button mat-raised-button color="primary" (click)="stepBack()"><<</button>
       <button
         mat-flat-button
@@ -42,6 +58,20 @@
         Текущий шаг: {{ currentAnimation }}
       </button>
       <button mat-raised-button color="primary" (click)="stepForward()">
+        >>
+      </button>
+    </ng-container>
+
+    <ng-container *ngIf="this.checkRoot()">
+      <button mat-raised-button color="primary" (click)="stepBackRepair()"><<</button>
+      <button
+        mat-flat-button
+        color="secondary"
+        (click)="clearCurrentAnimation()"
+      >
+        Текущий шаг: {{ currentAnimation }}
+      </button>
+      <button mat-raised-button color="primary" (click)="stepForwardRepair()">
         >>
       </button>
     </ng-container>
@@ -103,5 +133,6 @@
     color="primary"
     [mode]="spinnerMode"
   ></mat-progress-spinner>
+  <app-help></app-help>
   <canvas #canvas></canvas>
 </body>
