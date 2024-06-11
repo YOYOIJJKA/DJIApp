@@ -89,8 +89,8 @@ export class BabylonService {
   loadModel(): Promise<BABYLON.ISceneLoaderAsyncResult> {
     return BABYLON.SceneLoader.ImportMeshAsync(
       '',
-      // 'https://dl.dropbox.com/scl/fi/9w4y83j5dpffc9rflq8a7/DJI.glb?rlkey=ofykk9bn8gd86uv4lhkxvwu5j&raw=1',
-      'https://dl.dropbox.com/scl/fi/9w4y83j5dpffc9rflq8a7/DJI.glb?rlkey=ofykk9bn8gd86uv4lhkxvwu5j&st=f4or8h2c&raw=1',
+      'https://dl.dropbox.com/scl/fi/dk6l04eajt5mz0g25ftpo/test.glb?rlkey=m40szdk8z5fxhx5pvpv5uvfwi&st=lw0j4yre&raw=1',
+      // 'https://dl.dropbox.com/scl/fi/9w4y83j5dpffc9rflq8a7/DJI.glb?rlkey=ofykk9bn8gd86uv4lhkxvwu5j&st=59lb623c&raw=1',
       'DJI.glb',
       this.scene,
       () => {
@@ -114,7 +114,7 @@ export class BabylonService {
       value: this.camera.alpha,
     });
     alphaKeys.push({
-      frame: 100,
+      frame: 60,
       value: targetAlpha,
     });
 
@@ -250,7 +250,7 @@ export class BabylonService {
           false
         );
       },
-      this.cameraRotation ? 2500 : 0
+      this.cameraRotation ? 3500 : 0
     );
   };
 
