@@ -57,6 +57,12 @@ export class BabylonService {
       this.scene
     );
 
+    const secondLight = new BABYLON.HemisphericLight(
+      'secondLight',
+      new BABYLON.Vector3(0, -100, 0),
+      this.scene
+    )
+
     this.engine.runRenderLoop(() => {
       this.scene.render();
     });
@@ -89,8 +95,7 @@ export class BabylonService {
   loadModel(): Promise<BABYLON.ISceneLoaderAsyncResult> {
     return BABYLON.SceneLoader.ImportMeshAsync(
       '',
-      'https://dl.dropbox.com/scl/fi/dk6l04eajt5mz0g25ftpo/test.glb?rlkey=m40szdk8z5fxhx5pvpv5uvfwi&st=lw0j4yre&raw=1',
-      // 'https://dl.dropbox.com/scl/fi/9w4y83j5dpffc9rflq8a7/DJI.glb?rlkey=ofykk9bn8gd86uv4lhkxvwu5j&st=59lb623c&raw=1',
+      'https://dl.dropbox.com/scl/fi/9w4y83j5dpffc9rflq8a7/DJI.glb?rlkey=ofykk9bn8gd86uv4lhkxvwu5j&st=59lb623c&raw=1', //DJI.glb
       'DJI.glb',
       this.scene,
       () => {

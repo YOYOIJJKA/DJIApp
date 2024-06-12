@@ -27,6 +27,7 @@ export class ExplorationComponent implements AfterViewInit {
       this.spinnerMode = 'determinate';
     });
     this.babylonService.tip$.subscribe((tip) => {
+      console.log('Mesh name is ' + tip);
       this.label = this.tipToLabel(tip);
     });
     this.babylonService.animateCamera();
