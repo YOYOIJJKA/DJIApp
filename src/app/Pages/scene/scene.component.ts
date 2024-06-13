@@ -120,6 +120,8 @@ export class SceneComponent implements AfterViewInit, OnDestroy {
       this.babylonService.stepForward(0);
       this.tip =
         this.complicatedAnimations[this.currentAnimation].params[0].tip;
+
+      this.visible = Boolean(this.tip);
       this.currentAnimation++;
       if (this.currentAnimation < this.complicatedAnimations.length) {
         this.createRepairAnimations();
