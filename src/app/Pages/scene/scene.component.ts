@@ -213,6 +213,9 @@ export class SceneComponent implements AfterViewInit, OnDestroy {
   }
 
   clearCurrentAnimation() {
+    this.babylonService.resetPosition();
+    this.tip = '';
+    this.visible = false;
     this.currentAnimation = 0;
   }
 
@@ -299,7 +302,7 @@ export class SceneComponent implements AfterViewInit, OnDestroy {
   }
 
   nextAnimation() {
-    if (this.currentAnimation < this.assemble.length) {
+    if (this.currentAnimation < this.assemble.length && !this.isDisabledSelect) {
       console.log(this.assemble[this.currentAnimation]);
       this.tip = this.assemble[this.currentAnimation].tip;
       if (this.tip) {
@@ -310,7 +313,7 @@ export class SceneComponent implements AfterViewInit, OnDestroy {
     }
   }
   previousAnimation() {
-    if (this.currentAnimation > 0) {
+    if (this.currentAnimation > 0 && !this.isDisabledSelect) {
       this.currentAnimation--;
       const reversedAnimation: AnimationParams = {
         ...this.assemble[this.currentAnimation],

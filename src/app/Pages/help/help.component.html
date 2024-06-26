@@ -1,6 +1,6 @@
 
-<img (click)="toggleShow()" class="help-img" src="/assets/help.png">
-<div class="help-block" *ngIf="showBlock">
+<img (click)="toggleShow()" class="help-img" src="/assets/help.png" style="z-index: 10;">
+<div class="help-block" *ngIf="showBlock" style="z-index: 10;">
   <mat-expansion-panel [expanded]="showExplorationTip">
     <mat-expansion-panel-header>
       <h1>Режим свободного исследования</h1>
