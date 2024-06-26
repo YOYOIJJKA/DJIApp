@@ -1342,6 +1342,7 @@ export const COMPLICATED_REPAIR_ANIMATIONS = [
       {
         componentName: 'Battery',
         rotationCamera: { alpha: Math.PI / 4, beta: Math.PI / 4 },
+        highlighted: ['Battery_primitive1'],
         params: [
           {
             coordinates: [0, SHIFT * 6],
