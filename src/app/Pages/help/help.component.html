@@ -1,6 +1,10 @@
-
-<img (click)="toggleShow()" class="help-img" src="/assets/help.png" style="z-index: 10;">
-<div class="help-block" *ngIf="showBlock" style="z-index: 10;">
+<img
+  (click)="toggleShow()"
+  class="help-img"
+  src="/assets/help.png"
+  style="z-index: 10"
+/>
+<div class="help-block" *ngIf="showBlock" style="z-index: 10">
   <mat-expansion-panel [expanded]="showExplorationTip">
     <mat-expansion-panel-header>
       <h1>Режим свободного исследования</h1>
@@ -39,7 +43,7 @@
       </p>
       <p>
         Далее необходимо дождаться окончания загрузки модели. Сам процесс
-        загрузки отражает спиннер в углу экрана.
+        загрузки отражает спиннер в центре экрана.
         <br />
         <img class="spinner-img" src="/assets/spinner.png" />
       </p>
@@ -49,6 +53,8 @@
         проигрывание кнопкой "Запустить анимацию". Также предусмотрены
         стрелочные кнопки "<<" и ">>", позволяющие проигрывать многоступенчатые
         сценарии, передвигая сценарий на один шаг назад и вперед соответственно.
+        Нажатие на кнопку, содержащую номер текущего шага, вернет вас к
+        исходному состоянию модели.
         <br />
         <img src="/assets/arrow-buttons.png" class="btn-img" />
       </p>
