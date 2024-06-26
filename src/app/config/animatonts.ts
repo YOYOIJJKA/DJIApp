@@ -241,7 +241,7 @@ export const ASSSEMBLE_ANIMATIONS: AnimationParams[] = [
       'RightBackBlades',
     ],
     position: 'position.y',
-    tip: 'Надавите на лопасти, чтобы они опустилась вниз.',
+    tip: 'Надавите на лопасти, чтобы они опустились вниз.',
     rotationCamera: { alpha: Math.PI / 4, beta: Math.PI / 4 },
   },
   {
@@ -482,7 +482,7 @@ export const COMPLICATED_ANIMATIONS: ComplicatedAnimation[] = [
       {
         coordinates: [0, -SHIFT / 10],
         position: 'position.y',
-        tip: 'Надавите на лопасти, чтобы они опустилась вниз.',
+        tip: 'Надавите на лопасти, чтобы они опустились вниз.',
       },
       {
         coordinates: [0, Math.PI / 12],
@@ -1093,7 +1093,7 @@ export const COMPLICATED_REPAIR_ANIMATIONS = [
           {
             coordinates: [0, -SHIFT / 10],
             position: 'position.y',
-            tip: 'Надавите на лопасти, чтобы они опустилась вниз.',
+            tip: 'Надавите на лопасти, чтобы они опустились вниз.',
           },
         ],
       },
