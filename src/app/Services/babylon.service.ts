@@ -95,7 +95,7 @@ export class BabylonService {
   loadModel(): Promise<BABYLON.ISceneLoaderAsyncResult> {
     return BABYLON.SceneLoader.ImportMeshAsync(
       '',
-      'https://dl.dropbox.com/scl/fi/9w4y83j5dpffc9rflq8a7/DJI.glb?rlkey=ofykk9bn8gd86uv4lhkxvwu5j&st=59lb623c&raw=1', //DJI.glb
+      'https://dl.dropbox.com/scl/fi/9w4y83j5dpffc9rflq8a7/DJI.glb?rlkey=ofykk9bn8gd86uv4lhkxvwu5j&st=ge8a732n&raw=1', //DJI.glb
       'DJI.glb',
       this.scene,
       () => {
