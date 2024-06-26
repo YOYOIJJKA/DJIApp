@@ -2015,6 +2015,12 @@ export const ANIMATIONS: AnimationParams[] = [
 export const EXPLOSION_ANIMATIONS: AnimationParams[] = [
   {
     from: 0,
+    to: SHIFT * 4,
+    componentName: 'Battery',
+    position: 'position.y',
+  },
+  {
+    from: 0,
     to: -SHIFT * 3.5,
     componentName: 'BottomBoard',
     position: 'position.y',
@@ -2027,13 +2033,13 @@ export const EXPLOSION_ANIMATIONS: AnimationParams[] = [
   },
   {
     from: 0,
-    to: SHIFT * 3,
+    to: SHIFT * -3,
     componentName: 'CameraModule',
     position: 'position.y',
   },
   {
     from: 0,
-    to: SHIFT * 4,
+    to: SHIFT * -4,
     componentName: 'CameraProtection',
     position: 'position.y',
   },
